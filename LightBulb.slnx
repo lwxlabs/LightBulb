@@ -10,6 +10,7 @@
 
   <Project Path="LightBulb/LightBulb.csproj" />
   <Project Path="LightBulb.Core.Tests/LightBulb.Core.Tests.csproj" />
+  <Project Path="LightBulb.Tests/LightBulb.Tests.csproj" />
   <Project Path="LightBulb.Core/LightBulb.Core.csproj" />
   <Project Path="LightBulb.PlatformInterop/LightBulb.PlatformInterop.csproj" />
 </Solution>

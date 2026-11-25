@@ -13,7 +13,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Desktop" />
-    <PackageReference Include="Cogwheel" />
+    <PackageReference Include="LwXLabs.Localite" GeneratePathProperty="true" />
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="CSharpier.MsBuild" PrivateAssets="all" />
     <PackageReference Include="DialogHost.Avalonia" />
@@ -27,5 +27,15 @@
   <ItemGroup>
     <ProjectReference Include="../LightBulb.Core/LightBulb.Core.csproj" />
     <ProjectReference Include="../LightBulb.PlatformInterop/LightBulb.PlatformInterop.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(PublishTrimmed)' == 'true'">
+    <!-- sqlite-net maps Localite's database rows using reflection. Keep its mapping metadata. -->
+    <TrimmerRootAssembly Include="Localite" />
+    <TrimmerRootAssembly Include="SQLite-net" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(PkgLwXLabs_Localite)' != ''">
+    <None Include="$(PkgLwXLabs_Localite)/LICENSE.txt" Link="Licenses/Localite/LICENSE.txt" CopyToPublishDirectory="PreserveNewest" />
+    <None Include="$(PkgLwXLabs_Localite)/NOTICE.txt" Link="Licenses/Localite/NOTICE.txt" CopyToPublishDirectory="PreserveNewest" />
+    <None Include="$(PkgLwXLabs_Localite)/THIRD-PARTY-NOTICES.txt" Link="Licenses/Localite/THIRD-PARTY-NOTICES.txt" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

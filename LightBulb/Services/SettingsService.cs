@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text.Json.Serialization;
-using Cogwheel;
+using System.IO;
+using System.Text.Json;
+using Localite;
 using CommunityToolkit.Mvvm.ComponentModel;
 using LightBulb.Core;
 using LightBulb.Framework;
@@ -14,12 +16,116 @@ using Microsoft.Win32;
 
 namespace LightBulb.Services;
 
-[ObservableObject]
-public partial class SettingsService()
-    : SettingsBase(StartOptions.Current.SettingsPath, SerializerContext.Default)
+public partial class SettingsService : ObservableObject, IDisposable
 {
+    private const string SettingsKey = "settings";
     private StartupService? _startupService;
     private readonly object _saveGate = new();
+    private readonly string? _legacySettingsPath;
+    private ILocaliteStore? _store;
+    private string? _readFailure;
+    private bool _disposed;
+
+    // Deserialization creates an in-memory snapshot, not another database connection.
+    [JsonConstructor]
+    public SettingsService() { }
+
+    public SettingsService(string legacySettingsPath)
+    {
+        _legacySettingsPath = Path.GetFullPath(legacySettingsPath);
+    }
+
+    private string LegacySettingsPath =>
+        _legacySettingsPath ?? Path.GetFullPath(StartOptions.Current.SettingsPath);
+
+    private string DatabasePath
+    {
+        get
+        {
+            var path = LegacySettingsPath;
+            var database = Path.ChangeExtension(path, ".db3");
+            return string.Equals(path, database, StringComparison.OrdinalIgnoreCase)
+                ? path + ".settings.db3"
+                : database;
+        }
+    }
+
+    private ILocaliteStore Store
+    {
+        get
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            return _store ??= LocaliteStore.Create(new LocaliteStoreOptions
+            {
+                ApplicationId = "LightBulb",
+                Directory = Path.GetDirectoryName(DatabasePath),
+                DbName = Path.GetFileName(DatabasePath),
+                AutoExpire = false,
+                CleanupOnStart = false,
+                AutoExpireTimeOut = TimeSpan.Zero,
+                // Localite reports some SQLite read errors through its logger and returns null.
+                // Do not mistake an unsuccessful read for missing settings.
+                SqlLogger = message =>
+                {
+                    if (message.StartsWith("LocaliteStore GetInternal", StringComparison.Ordinal)
+                        && message.Contains(" failed:", StringComparison.Ordinal))
+                        _readFailure = message;
+                },
+            });
+        }
+    }
+
+    private void CopySettingsFrom(SettingsService source)
+    {
+        // Keep the existing observable instance and all UI bindings intact. The JSON contract
+        // excludes registry-backed settings and read-only limits, just like the old serializer.
+        foreach (var property in SerializerContext.Default.SettingsService.Properties)
+        {
+            if (property.Get is { } get && property.Set is { } set)
+                set(this, get(source));
+        }
+    }
+
+    private void SaveSnapshot() =>
+        Store.Add(SettingsKey, this, SerializerContext.Default.SettingsService);
+
+    private SettingsService? ReadSnapshot(out bool importedLegacy)
+    {
+        importedLegacy = false;
+        _readFailure = null;
+        var snapshot = Store.Get(SettingsKey, SerializerContext.Default.SettingsService);
+        if (_readFailure is not null)
+            throw new IOException("Unable to read the LightBulb settings database.");
+        if (snapshot is not null)
+            return snapshot;
+
+        // Import the original JSON only if no SQLite record exists. Retain the original file
+        // unchanged for rollback, even after successful migration.
+        try
+        {
+            using var stream = File.OpenRead(LegacySettingsPath);
+            snapshot = JsonSerializer.Deserialize(stream, SerializerContext.Default.SettingsService)
+                ?? throw new JsonException("The legacy settings file does not contain an object.");
+            importedLegacy = true;
+            return snapshot;
+        }
+        catch (Exception ex) when (ex is FileNotFoundException or DirectoryNotFoundException)
+        {
+            return null;
+        }
+    }
+
+    public void Dispose()
+    {
+        lock (_saveGate)
+        {
+            if (_disposed)
+                return;
+            _disposed = true;
+            _store?.Dispose();
+            _store = null;
+        }
+    }
 
     private readonly RegistrySwitch<int> _extendedGammaRangeSwitch = new(
         RegistryHive.LocalMachine,
@@ -234,9 +340,9 @@ public partial class SettingsService()
         _startupService = startupService;
     }
 
-    public override void Reset()
+    public void Reset()
     {
-        base.Reset();
+        CopySettingsFrom(new SettingsService());
         IsAutoStartEnabled = false;
         IsStartMinimizedEnabled = false;
         Profiles = CreateStarterProfiles();
@@ -260,13 +366,13 @@ public partial class SettingsService()
         OnPropertyChanged(string.Empty);
     }
 
-    public override void Save()
+    public void Save()
     {
 #if DEBUG
         IsAutoStartEnabled = false;
 #endif
         lock (_saveGate)
-            base.Save();
+            SaveSnapshot();
 
         try
         {
@@ -281,11 +387,20 @@ public partial class SettingsService()
         OnPropertyChanged(string.Empty);
     }
 
-    public override bool Load()
+    public bool Load()
     {
-        var wasLoaded = base.Load();
+        lock (_saveGate)
+            return LoadCore();
+    }
 
-        // This private fork is fixed-dark. Preserve the serialized property for backward-compatible
+    private bool LoadCore()
+    {
+        var snapshot = ReadSnapshot(out var importedLegacy);
+        var wasLoaded = snapshot is not null;
+        if (snapshot is not null)
+            CopySettingsFrom(snapshot);
+
+        // This fork is fixed-dark. Preserve the serialized property for backward-compatible
         // settings JSON, but do not let an old Light/System value re-enable runtime theme mutation.
         Theme = ThemeVariant.Dark;
 
@@ -510,7 +625,9 @@ public partial class SettingsService()
         // a user deletes them and exits without opening Settings again. Avoid the override here so
         // registry switches are not needlessly touched during loading.
         if (
-            seededDefaultProfiles
+            importedLegacy
+            || !wasLoaded
+            || seededDefaultProfiles
             || seededDefaultToneProfiles
             || seededToneProfilesV020
             || migratedProfileTooltipsV020
@@ -519,7 +636,7 @@ public partial class SettingsService()
         )
         {
             lock (_saveGate)
-                base.Save();
+                SaveSnapshot();
         }
 
         OnPropertyChanged(string.Empty);
@@ -535,7 +652,7 @@ public partial class SettingsService()
         try
         {
             lock (_saveGate)
-                base.Save();
+                SaveSnapshot();
             return true;
         }
         catch
@@ -764,6 +881,10 @@ public partial class SettingsService()
 
 public partial class SettingsService
 {
+    [JsonSourceGenerationOptions(
+        GenerationMode = JsonSourceGenerationMode.Metadata,
+        AllowTrailingCommas = true,
+        ReadCommentHandling = JsonCommentHandling.Skip)]
     [JsonSerializable(typeof(SettingsService))]
     private partial class SerializerContext : JsonSerializerContext;
 }

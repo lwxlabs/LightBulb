@@ -1,4 +1,12 @@
-# LightBulb 2.7.1-forked-0.20 — fork notes
+# LightBulb 2.7.1-forked-0.21 — fork notes
+
+## forked-0.21 — Localite settings persistence
+
+- Replace Cogwheel JSON saving with LwXLabs.Localite 1.3.11 and SQLite.
+- Import existing Settings.json once, retain the original file for rollback, and persist future changes in Settings.db3.
+- Preserve profiles, hotkeys, tone settings, and reset/cancel behavior.
+- Include native SQLite and Localite license notices in the self-contained Windows installer.
+- Version is 2.7.1-forked-0.21 / 2.7.1.21.
 
 ## forked-0.20 — tone workflow, profile explanations, installer upgrade reliability
 

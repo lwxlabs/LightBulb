@@ -14,6 +14,10 @@ A customized Windows fork of [Tyrrrz/LightBulb](https://github.com/Tyrrrz/LightB
 
 The original automatic day/night cycle, location settings and application whitelist are retained.
 
+## Settings storage
+
+Settings are stored locally in SQLite using [LwXLabs.Localite](https://www.nuget.org/packages/LwXLabs.Localite/1.3.11). On first launch, existing Settings.json is imported into Settings.db3 in the same directory. The original JSON is retained unchanged for rollback. Subsequent saves and loads use SQLite; settings do not expire. The LIGHTBULB_SETTINGS_PATH override still identifies the legacy settings path and determines the matching database location.
+
 ## Build
 
 Requires the .NET 10 SDK and Windows.
@@ -28,7 +32,7 @@ The installer retains the upstream application ID for upgrade compatibility. It 
 
 ## Version
 
-2.7.1-forked-0.20 (assembly/file version 2.7.1.20). See [fork notes](FORK-NOTES.md) for changes.
+2.7.1-forked-0.21 (assembly/file version 2.7.1.21). See [fork notes](FORK-NOTES.md) for changes.
 
 ## Attribution
 

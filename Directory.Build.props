@@ -1,10 +1,10 @@
 <Project>
   <PropertyGroup>
     <TargetFramework>net10.0-windows</TargetFramework>
-    <Version>2.7.1.20</Version>
-    <AssemblyVersion>2.7.1.20</AssemblyVersion>
-    <FileVersion>2.7.1.20</FileVersion>
-    <InformationalVersion>2.7.1-forked-0.20</InformationalVersion>
+    <Version>2.7.1.21</Version>
+    <AssemblyVersion>2.7.1.21</AssemblyVersion>
+    <FileVersion>2.7.1.21</FileVersion>
+    <InformationalVersion>2.7.1-forked-0.21</InformationalVersion>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     <Company>LwXLabs</Company>
     <Copyright>Copyright (C) Oleksii Holub</Copyright>

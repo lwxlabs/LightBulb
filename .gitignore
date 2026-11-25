@@ -23,6 +23,12 @@ artifacts/
 *.user
 *.local.json
 *.local.config
+# Runtime persistence (never publish user settings)
+Settings.json
+Settings.db3
+Settings.db3-*
+*.db3
+*.db3-*
 *.pfx
 *.p12
 *.key

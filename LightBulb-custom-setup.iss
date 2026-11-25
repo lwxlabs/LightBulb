@@ -10,8 +10,8 @@
 #endif
 
 #define AppName "LightBulb"
-#define AppDisplayVersion "2.7.1-forked-0.20"
-#define AppFileVersion "2.7.1.20"
+#define AppDisplayVersion "2.7.1-forked-0.21"
+#define AppFileVersion "2.7.1.21"
 #define AppPublisher "LwXLabs"
 #define PayloadDir "artifacts\InstallerPayload"
 

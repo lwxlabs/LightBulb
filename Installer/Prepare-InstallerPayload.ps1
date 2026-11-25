@@ -24,7 +24,7 @@ if (Test-Path $payloadDir) {
 }
 New-Item -ItemType Directory -Path $payloadDir -Force | Out-Null
 
-Write-Host 'Publishing LightBulb 2.7.1-forked-0.20 (win-x64, self-contained)...'
+Write-Host 'Publishing LightBulb 2.7.1-forked-0.21 (win-x64, self-contained)...'
 & dotnet publish $projectFile `
     -p:CSharpier_Bypass=true `
     --configuration Release `
