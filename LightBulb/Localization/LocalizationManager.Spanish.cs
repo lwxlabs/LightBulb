@@ -41,12 +41,12 @@ public partial class LocalizationManager
             [nameof(LanguageTooltip)] = "Idioma de interfaz preferido",
             [nameof(StartWithWindowsLabel)] = "Iniciar con Windows",
             [nameof(StartWithWindowsTooltip)] = "Iniciar LightBulb al arrancar Windows",
-            [nameof(AutoUpdateLabel)] = "Actualización automática",
-            [nameof(AutoUpdateTooltip)] =
-                "Actualizar LightBulb automáticamente a la última versión",
             [nameof(DefaultToDayConfigLabel)] = "Usar configuración diurna por defecto",
             [nameof(DefaultToDayConfigTooltip)] =
                 "Cuando LightBulb está desactivado o en pausa, restaurar la temperatura y el brillo diurnos configurados en lugar del gamma predeterminado del monitor",
+            [nameof(DayNightCycleLabel)] = "Horario día/noche",
+            [nameof(DayNightCycleTooltip)] =
+                "Cambiar automáticamente entre las configuraciones de día y noche mediante el método de amanecer/atardecer seleccionado. Si se desactiva, Automático mantiene siempre la configuración diurna; los perfiles no se ven afectados.",
             [nameof(PauseWhenFullscreenLabel)] = "Pausar en pantalla completa",
             [nameof(PauseWhenFullscreenTooltip)] =
                 "Pausar LightBulb cuando alguna ventana a pantalla completa esté en primer plano",
@@ -145,27 +145,7 @@ public partial class LocalizationManager
             [nameof(TrayDisableFor1MinuteMenuItem)] = "Durante 1 minuto",
             [nameof(TrayExitMenuItem)] = "Salir",
             [nameof(TrayTooltipDisabled)] = "Desactivado",
-            [nameof(UpdateAvailableTitle)] = "Actualización disponible",
-            [nameof(UpdateAvailableMessage)] = """
-                La actualización a {0} v{1} ha sido descargada.
-                ¿Deseas instalarla ahora?
-                """,
-            [nameof(InstallButton)] = "INSTALAR",
             [nameof(CloseButton)] = "CERRAR",
-            [nameof(UkraineSupportTitle)] = "¡Gracias por apoyar a Ucrania!",
-            [nameof(UkraineSupportMessage)] = """
-                Mientras Rusia libra una guerra genocida contra mi país, estoy agradecido a todos los que continúan apoyando a Ucrania en nuestra lucha por la libertad.
-
-                Haz clic en MÁS INFORMACIÓN para encontrar formas de ayudar.
-                """,
-            [nameof(LearnMoreButton)] = "MÁS INFORMACIÓN",
-            [nameof(UnstableBuildTitle)] = "Advertencia de compilación inestable",
-            [nameof(UnstableBuildMessage)] = """
-                Estás usando una compilación de desarrollo de {0}. Estas compilaciones no han sido probadas exhaustivamente y pueden contener errores.
-
-                Las actualizaciones automáticas están desactivadas para compilaciones de desarrollo. Si quieres cambiar a una versión estable, descárgala manualmente.
-                """,
-            [nameof(SeeReleasesButton)] = "VER VERSIONES",
             [nameof(LimitedGammaRangeTitle)] = "Rango gamma limitado",
             [nameof(LimitedGammaRangeMessage)] = """
                 {0} ha detectado que los controles de rango gamma extendido no están habilitados en este sistema.
@@ -174,13 +154,5 @@ public partial class LocalizationManager
                 Presiona CORREGIR para desbloquear el rango gamma. Pueden requerirse privilegios de administrador.
                 """,
             [nameof(FixButton)] = "CORREGIR",
-            [nameof(WelcomeTitle)] = "¡Bienvenido!",
-            [nameof(WelcomeMessage)] = """
-                ¡Gracias por instalar {0}!
-                Para una experiencia más personalizada, establece tu configuración solar preferida.
-
-                Presiona OK para abrir los ajustes.
-                """,
-            [nameof(OkButton)] = "OK",
         };
 }

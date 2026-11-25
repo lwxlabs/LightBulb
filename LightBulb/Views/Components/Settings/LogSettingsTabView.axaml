@@ -1,0 +1,35 @@
+<UserControl
+  x:Class="LightBulb.Views.Components.Settings.LogSettingsTabView"
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
+  x:DataType="settings:LogSettingsTabViewModel"
+>
+  <Grid Margin="16" MinHeight="330" RowDefinitions="Auto,Auto,*">
+    <Grid Grid.Row="0" RowDefinitions="Auto,Auto" RowSpacing="8">
+      <StackPanel Grid.Row="0" VerticalAlignment="Center" Spacing="2">
+        <TextBlock FontSize="16" FontWeight="SemiBold" Text="{Binding LocalizationManager.LogHeader}" TextWrapping="Wrap" />
+        <TextBlock FontSize="10" Opacity="0.65" Text="{Binding LogPath}" TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding LogPath}" />
+      </StackPanel>
+      <WrapPanel Grid.Row="1" HorizontalAlignment="Right" Orientation="Horizontal">
+        <Button Margin="4,0" Command="{Binding RefreshLogCommand}" Content="{Binding LocalizationManager.LogRefreshButton}" Theme="{DynamicResource MaterialFlatButton}" />
+        <Button Margin="4,0" Command="{Binding CopyLogCommand}" Content="{Binding LocalizationManager.LogCopyButton}" Theme="{DynamicResource MaterialFlatButton}" />
+        <Button Margin="4,0" Command="{Binding ClearLogCommand}" Content="{Binding LocalizationManager.LogClearButton}" Theme="{DynamicResource MaterialFlatButton}" />
+      </WrapPanel>
+    </Grid>
+
+    <TextBlock Grid.Row="1" Margin="0,10,0,8" FontSize="11" Opacity="0.75" Text="{Binding LocalizationManager.LogHint}" TextWrapping="Wrap" />
+
+    <TextBox
+      Grid.Row="2"
+      AcceptsReturn="True"
+      FontFamily="Consolas"
+      FontSize="11"
+      IsReadOnly="True"
+      Text="{Binding LogText}"
+      TextWrapping="NoWrap"
+      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+      ScrollViewer.VerticalScrollBarVisibility="Auto"
+    />
+  </Grid>
+</UserControl>

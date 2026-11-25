@@ -23,8 +23,26 @@ public readonly record struct HotKey(PhysicalKey Key, KeyModifiers Modifiers = K
         if (Modifiers.HasFlag(KeyModifiers.Meta))
             buffer.Append("Win + ");
 
-        buffer.Append(Key);
+        buffer.Append(GetDisplayKey(Key));
 
         return buffer.ToString();
+    }
+
+    private static string GetDisplayKey(PhysicalKey key)
+    {
+        var value = (int)key;
+        if (value >= (int)PhysicalKey.A && value <= (int)PhysicalKey.Z)
+            return ((char)('A' + value - (int)PhysicalKey.A)).ToString();
+        if (value >= (int)PhysicalKey.Digit0 && value <= (int)PhysicalKey.Digit9)
+            return ((char)('0' + value - (int)PhysicalKey.Digit0)).ToString();
+
+        return key switch
+        {
+            PhysicalKey.ArrowLeft => "Left",
+            PhysicalKey.ArrowRight => "Right",
+            PhysicalKey.ArrowUp => "Up",
+            PhysicalKey.ArrowDown => "Down",
+            _ => key.ToString(),
+        };
     }
 }

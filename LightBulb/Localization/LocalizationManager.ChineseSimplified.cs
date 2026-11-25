@@ -47,11 +47,12 @@ public partial class LocalizationManager
             [nameof(LanguageTooltip)] = "首选用户界面语言",
             [nameof(StartWithWindowsLabel)] = "随 Windows 启动",
             [nameof(StartWithWindowsTooltip)] = "在 Windows 启动时运行 LightBulb",
-            [nameof(AutoUpdateLabel)] = "自动更新",
-            [nameof(AutoUpdateTooltip)] = "自动将 LightBulb 更新至最新版本",
             [nameof(DefaultToDayConfigLabel)] = "默认为日间配置",
             [nameof(DefaultToDayConfigTooltip)] =
                 "当 LightBulb 被禁用或暂停时，恢复配置的日间色温和亮度，而不是默认的显示器伽马值",
+            [nameof(DayNightCycleLabel)] = "日/夜计划",
+            [nameof(DayNightCycleTooltip)] =
+                "使用所选的日出/日落方式自动在日间与夜间配置之间切换。关闭后，自动模式将始终使用日间配置；配置文件不受影响。",
             [nameof(PauseWhenFullscreenLabel)] = "全屏时暂停",
             [nameof(PauseWhenFullscreenTooltip)] = "当任何全屏窗口处于前台时暂停 LightBulb",
             [nameof(GammaSmoothingLabel)] = "伽马平滑",
@@ -147,27 +148,7 @@ public partial class LocalizationManager
             [nameof(TrayTooltipDisabled)] = "已禁用",
 
             // Dialog messages (对话框消息)
-            [nameof(UpdateAvailableTitle)] = "可用更新",
-            [nameof(UpdateAvailableMessage)] = """
-                已下载更新至 {0} v{1}。
-                您想现在安装吗？
-                """,
-            [nameof(InstallButton)] = "安装",
             [nameof(CloseButton)] = "关闭",
-            [nameof(UkraineSupportTitle)] = "感谢您支持乌克兰！",
-            [nameof(UkraineSupportMessage)] = """
-                当俄罗斯对我的国家发动种族灭绝战争时，我感激每一位继续站在乌克兰一边、支持我们争取自由斗争的人。
-
-                大眼仔选择保持中立，受伤害的最终是平民百姓。点击“了解更多”查找您可以提供帮助的方式。
-                """,
-            [nameof(LearnMoreButton)] = "了解更多",
-            [nameof(UnstableBuildTitle)] = "不稳定版本警告",
-            [nameof(UnstableBuildMessage)] = """
-                您正在使用 {0} 的开发版本。这些版本未经过充分测试，可能包含错误。
-
-                开发版本已禁用自动更新。如果您想切换到稳定版本，请手动下载。
-                """,
-            [nameof(SeeReleasesButton)] = "查看发布版本",
             [nameof(LimitedGammaRangeTitle)] = "伽马范围受限",
             [nameof(LimitedGammaRangeMessage)] = """
                 {0} 检测到该系统未启用扩展伽马范围控制。
@@ -176,13 +157,5 @@ public partial class LocalizationManager
                 按下“修复”以解锁伽马范围。可能需要管理员权限。
                 """,
             [nameof(FixButton)] = "修复",
-            [nameof(WelcomeTitle)] = "欢迎使用！",
-            [nameof(WelcomeMessage)] = """
-                感谢您安装 {0}！
-                为了获得最个性化的体验，请设置您首选的太阳配置。
-
-                按下“确定”打开设置。
-                """,
-            [nameof(OkButton)] = "确定",
         };
 }

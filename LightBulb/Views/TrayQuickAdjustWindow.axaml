@@ -1,0 +1,129 @@
+<Window
+  x:Class="LightBulb.Views.TrayQuickAdjustWindow"
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:vm="clr-namespace:LightBulb.ViewModels"
+  x:DataType="vm:TrayQuickAdjustViewModel"
+  Width="560"
+  Height="350"
+  MinWidth="420"
+  MinHeight="320"
+  CanResize="True"
+  WindowStartupLocation="CenterScreen"
+  Background="{DynamicResource ForkBackgroundBrush}"
+>
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="24" Spacing="22">
+      <StackPanel Spacing="4">
+        <TextBlock
+          FontSize="22"
+          FontWeight="SemiBold"
+          Text="{Binding LocalizationManager.QuickAdjustTitle}"
+        />
+        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="6">
+          <TextBlock
+            Grid.Column="0"
+            Foreground="{DynamicResource ForkMutedTextBrush}"
+            Text="{Binding LocalizationManager.QuickAdjustProfileLabel}"
+            TextWrapping="Wrap"
+          />
+          <TextBlock
+            Grid.Column="1"
+            FontWeight="SemiBold"
+            Foreground="{DynamicResource ForkTextBrush}"
+            Text="{Binding ActiveProfileName}"
+            TextTrimming="CharacterEllipsis"
+          />
+        </Grid>
+      </StackPanel>
+
+      <Border
+        Padding="18"
+        Background="{DynamicResource ForkPanelBrush}"
+        BorderBrush="{DynamicResource ForkBorderBrush}"
+        BorderThickness="1"
+        CornerRadius="8"
+      >
+        <StackPanel Spacing="12">
+          <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16">
+            <TextBlock
+              Grid.Column="0"
+              VerticalAlignment="Center"
+              FontSize="16"
+              FontWeight="SemiBold"
+              Text="{Binding LocalizationManager.QuickAdjustTemperatureLabel}"
+              TextWrapping="Wrap"
+            />
+            <TextBlock
+              Grid.Column="1"
+              MinWidth="82"
+              VerticalAlignment="Center"
+              FontSize="16"
+              FontWeight="SemiBold"
+              Text="{Binding TemperatureText}"
+              TextAlignment="Right"
+            />
+          </Grid>
+          <Slider
+            Height="44"
+            IsSnapToTickEnabled="True"
+            LargeChange="500"
+            Minimum="{Binding MinimumTemperature}"
+            Maximum="{Binding MaximumTemperature}"
+            SmallChange="25"
+            TickFrequency="25"
+            Value="{Binding Temperature, Mode=TwoWay}"
+          />
+        </StackPanel>
+      </Border>
+
+      <Border
+        Padding="18"
+        Background="{DynamicResource ForkPanelBrush}"
+        BorderBrush="{DynamicResource ForkBorderBrush}"
+        BorderThickness="1"
+        CornerRadius="8"
+      >
+        <StackPanel Spacing="12">
+          <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16">
+            <TextBlock
+              Grid.Column="0"
+              VerticalAlignment="Center"
+              FontSize="16"
+              FontWeight="SemiBold"
+              Text="{Binding LocalizationManager.QuickAdjustBrightnessLabel}"
+              TextWrapping="Wrap"
+            />
+            <TextBlock
+              Grid.Column="1"
+              MinWidth="64"
+              VerticalAlignment="Center"
+              FontSize="16"
+              FontWeight="SemiBold"
+              Text="{Binding BrightnessText}"
+              TextAlignment="Right"
+            />
+          </Grid>
+          <Slider
+            Height="44"
+            IsSnapToTickEnabled="True"
+            LargeChange="0.1"
+            Minimum="0.1"
+            Maximum="1"
+            SmallChange="0.01"
+            TickFrequency="0.01"
+            Value="{Binding Brightness, Mode=TwoWay}"
+          />
+        </StackPanel>
+      </Border>
+
+      <Button
+        MinHeight="48"
+        HorizontalAlignment="Stretch"
+        HorizontalContentAlignment="Center"
+        Command="{Binding ResetCommand}"
+        Content="{Binding LocalizationManager.QuickAdjustResetButton}"
+      />
+    </StackPanel>
+  </ScrollViewer>
+</Window>

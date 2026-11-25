@@ -43,11 +43,12 @@ public partial class LocalizationManager
         [nameof(LanguageTooltip)] = "Bevorzugte Sprache der Benutzeroberfläche",
         [nameof(StartWithWindowsLabel)] = "Mit Windows starten",
         [nameof(StartWithWindowsTooltip)] = "LightBulb beim Windows-Start automatisch starten",
-        [nameof(AutoUpdateLabel)] = "Automatische Updates",
-        [nameof(AutoUpdateTooltip)] = "LightBulb automatisch auf die neueste Version aktualisieren",
         [nameof(DefaultToDayConfigLabel)] = "Zur Tageskonfiguration zurückkehren",
         [nameof(DefaultToDayConfigTooltip)] =
             "Wenn LightBulb deaktiviert oder pausiert ist, die konfigurierte Tagestemperatur und -helligkeit anstelle des Standard-Monitor-Gammas wiederherstellen",
+        [nameof(DayNightCycleLabel)] = "Tag-/Nacht-Zeitplan",
+        [nameof(DayNightCycleTooltip)] =
+            "Automatisch anhand der gewählten Sonnenaufgang-/Sonnenuntergangsmethode zwischen Tages- und Nachtkonfiguration wechseln. Wenn deaktiviert, verwendet Automatisch dauerhaft die Tageskonfiguration; Profile bleiben unverändert.",
         [nameof(PauseWhenFullscreenLabel)] = "Bei Vollbild pausieren",
         [nameof(PauseWhenFullscreenTooltip)] =
             "LightBulb pausieren, wenn ein Vollbildfenster im Vordergrund ist",
@@ -146,27 +147,7 @@ public partial class LocalizationManager
         [nameof(TrayDisableFor1MinuteMenuItem)] = "Für 1 Minute",
         [nameof(TrayExitMenuItem)] = "Beenden",
         [nameof(TrayTooltipDisabled)] = "Deaktiviert",
-        [nameof(UpdateAvailableTitle)] = "Update verfügbar",
-        [nameof(UpdateAvailableMessage)] = """
-            Update auf {0} v{1} wurde heruntergeladen.
-            Möchten Sie es jetzt installieren?
-            """,
-        [nameof(InstallButton)] = "INSTALLIEREN",
         [nameof(CloseButton)] = "SCHLIESSEN",
-        [nameof(UkraineSupportTitle)] = "Danke für Ihre Unterstützung der Ukraine!",
-        [nameof(UkraineSupportMessage)] = """
-            Während Russland einen Vernichtungskrieg gegen mein Land führt, bin ich jedem dankbar, der weiterhin an der Seite der Ukraine in unserem Kampf für die Freiheit steht.
-
-            Klicken Sie auf MEHR ERFAHREN, um Möglichkeiten der Unterstützung zu finden.
-            """,
-        [nameof(LearnMoreButton)] = "MEHR ERFAHREN",
-        [nameof(UnstableBuildTitle)] = "Warnung: Instabiler Build",
-        [nameof(UnstableBuildMessage)] = """
-            Sie verwenden einen Entwicklungs-Build von {0}. Diese Builds wurden nicht gründlich getestet und können Fehler enthalten.
-
-            Automatische Updates sind für Entwicklungs-Builds deaktiviert. Wenn Sie zu einem stabilen Release wechseln möchten, laden Sie ihn bitte manuell herunter.
-            """,
-        [nameof(SeeReleasesButton)] = "RELEASES ANZEIGEN",
         [nameof(LimitedGammaRangeTitle)] = "Begrenzter Gamma-Bereich",
         [nameof(LimitedGammaRangeMessage)] = """
             {0} hat festgestellt, dass erweiterte Gamma-Bereichssteuerungen auf diesem System nicht aktiviert sind.
@@ -175,13 +156,5 @@ public partial class LocalizationManager
             Drücken Sie BEHEBEN, um den Gamma-Bereich zu entsperren. Administratorrechte können erforderlich sein.
             """,
         [nameof(FixButton)] = "BEHEBEN",
-        [nameof(WelcomeTitle)] = "Willkommen!",
-        [nameof(WelcomeMessage)] = """
-            Danke für die Installation von {0}!
-            Für das beste personalisierte Erlebnis legen Sie bitte Ihre bevorzugte Solarkonfiguration fest.
-
-            Drücken Sie OK, um die Einstellungen zu öffnen.
-            """,
-        [nameof(OkButton)] = "OK",
     };
 }

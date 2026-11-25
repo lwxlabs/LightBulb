@@ -1,249 +1,452 @@
 <Application
-    x:Class="LightBulb.App"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:LightBulb.Views.Controls"
-    xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
-    xmlns:framework="clr-namespace:LightBulb.Framework"
-    xmlns:materialAssists="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
-    xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-    xmlns:materialStyles="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
-    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
-    xmlns:vm="clr-namespace:LightBulb.ViewModels"
-    Name="LightBulb"
-    ActualThemeVariantChanged="Application_OnActualThemeVariantChanged">
-    <Application.DataTemplates>
-        <framework:ViewManager />
-    </Application.DataTemplates>
+  x:Class="LightBulb.App"
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:controls="clr-namespace:LightBulb.Views.Controls"
+  xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+  xmlns:framework="clr-namespace:LightBulb.Framework"
+  xmlns:materialAssists="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
+  xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+  xmlns:materialStyles="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
+  xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+  xmlns:vm="clr-namespace:LightBulb.ViewModels"
+  Name="LightBulb"
+  RequestedThemeVariant="Dark"
+>
+  <Application.DataTemplates>
+    <framework:ViewManager />
+  </Application.DataTemplates>
 
-    <Application.Styles>
-        <!--  This theme is used as a stub to pre-load default resources, the actual colors are set through code  -->
-        <materialStyles:MaterialTheme
-            BaseTheme="Light"
-            PrimaryColor="Grey"
-            SecondaryColor="DeepOrange" />
-        <materialIcons:MaterialIconStyles />
-        <dialogHostAvalonia:DialogHostStyles />
+  <Application.Styles>
+    <!-- Fixed dark theme. Runtime Material theme mutation was removed because it caused MaterialThemeBase.StartUpdatingTheme to race on the Default key. -->
+    <materialStyles:MaterialTheme
+      BaseTheme="Dark"
+      PrimaryColor="Grey"
+      SecondaryColor="DeepOrange"
+    />
+    <materialIcons:MaterialIconStyles />
+    <dialogHostAvalonia:DialogHostStyles />
 
-        <!--  Combo box  -->
-        <Style Selector="ComboBox">
-            <Setter Property="FontSize" Value="14" />
+    <!-- Fixed-dark fork overrides. Keep the entire app, settings window and Avalonia tray popup
+         dark even if Windows itself uses a light theme. -->
+    <Style Selector="Window">
+      <Setter Property="Background" Value="{DynamicResource ForkBackgroundBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource ForkTextBrush}" />
+      <Setter Property="TransparencyBackgroundFallback" Value="{DynamicResource ForkBackgroundBrush}" />
+    </Style>
+    <Style Selector="UserControl">
+      <Setter Property="Background" Value="{DynamicResource ForkBackgroundBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource ForkTextBrush}" />
+    </Style>
+    <Style Selector="TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource ForkTextBrush}" />
+    </Style>
+    <Style Selector="TextBox">
+      <Setter Property="Background" Value="{DynamicResource ForkPanelBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource ForkTextBrush}" />
+    </Style>
+    <Style Selector="ComboBox">
+      <Setter Property="Background" Value="{DynamicResource ForkPanelBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource ForkTextBrush}" />
+    </Style>
+    <Style Selector="ListBox">
+      <Setter Property="Background" Value="{DynamicResource ForkPanelBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource ForkTextBrush}" />
+    </Style>
+    <Style Selector="MenuFlyoutPresenter">
+      <Setter Property="Background" Value="{DynamicResource ForkSurfaceBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource ForkTextBrush}" />
+    </Style>
+    <Style Selector="MenuItem">
+      <Setter Property="Foreground" Value="{DynamicResource ForkTextBrush}" />
+    </Style>
+    <Style Selector="MenuItem:pointerover">
+      <Setter Property="Background" Value="{DynamicResource ForkSurfaceHoverBrush}" />
+    </Style>
+    <Style Selector="ToolTip">
+      <Setter Property="Background" Value="{DynamicResource ForkSurfaceBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource ForkTextBrush}" />
+    </Style>
 
-            <Style Selector="^ /template/ Panel#PART_RootPanel">
-                <Setter Property="Height" Value="22" />
+    <!--  Combo box  -->
+    <Style Selector="ComboBox">
+      <Setter Property="FontSize" Value="14" />
+
+      <Style Selector="^ /template/ Panel#PART_RootPanel">
+        <Setter Property="Height" Value="22" />
+      </Style>
+
+      <Style Selector="^ /template/ ToggleButton">
+        <Style Selector="^:checked, ^:unchecked">
+          <Setter Property="Margin" Value="0" />
+          <Setter Property="CornerRadius" Value="0" />
+
+          <Style Selector="^ ContentPresenter#contentPresenter">
+            <Setter Property="Margin" Value="12,8" />
+          </Style>
+        </Style>
+      </Style>
+    </Style>
+
+    <!--  Dialog host  -->
+    <Style Selector="dialogHostAvalonia|DialogHost">
+      <Setter Property="DialogMargin" Value="0" />
+    </Style>
+
+    <Style Selector="dialogHostAvalonia|DialogOverlayPopupHost">
+      <Setter Property="Background" Value="{DynamicResource ForkSurfaceBrush}" />
+    </Style>
+
+    <!--  Radio button  -->
+    <Style Selector="RadioButton">
+      <Setter Property="FontSize" Value="14" />
+      <Setter Property="materialAssists:SelectionControlAssist.Size" Value="18" />
+
+      <Style Selector="^:checked, ^:unchecked">
+        <Style Selector="^ /template/ Ellipse#PART_HoverEffect">
+          <Setter Property="Width" Value="32" />
+          <Setter Property="Height" Value="32" />
+        </Style>
+      </Style>
+    </Style>
+
+    <!--  Slider  -->
+    <Style Selector="Slider">
+      <Style Selector="^ /template/ ProgressBar#PART_ProgressLayer">
+        <Style Selector="^:horizontal">
+          <Style Selector="^ Panel#PART_InnerPanel">
+            <Setter Property="Height" Value="2" />
+
+            <Style Selector="^ Border#PART_InactiveState">
+              <Setter Property="Margin" Value="0" />
+              <Setter Property="Height" Value="2" />
             </Style>
 
-            <Style Selector="^ /template/ ToggleButton">
-                <Style Selector="^:checked, ^:unchecked">
-                    <Setter Property="Margin" Value="0" />
-                    <Setter Property="CornerRadius" Value="0" />
-
-                    <Style Selector="^ ContentPresenter#contentPresenter">
-                        <Setter Property="Margin" Value="12,8" />
-                    </Style>
-                </Style>
+            <Style Selector="^ Border#PART_Indicator">
+              <Setter Property="Margin" Value="0" />
             </Style>
+          </Style>
+        </Style>
+      </Style>
+
+      <Style Selector="^ /template/ Track#PART_Track">
+        <Style Selector="^:horizontal">
+          <Setter Property="Margin" Value="4,0" />
         </Style>
 
-        <!--  Dialog host  -->
-        <Style Selector="dialogHostAvalonia|DialogHost">
-            <Setter Property="DialogMargin" Value="0" />
+        <Style Selector="^ Border#PART_HoverEffect">
+          <Setter Property="Width" Value="24" />
+          <Setter Property="Height" Value="24" />
         </Style>
 
-        <Style Selector="dialogHostAvalonia|DialogOverlayPopupHost">
-            <Setter Property="Background" Value="{DynamicResource MaterialPaperBrush}" />
+        <Style Selector="^ Border#PART_ThumbGrip">
+          <Setter Property="Width" Value="12" />
+          <Setter Property="Height" Value="12" />
         </Style>
+      </Style>
+    </Style>
 
-        <!--  Radio button  -->
-        <Style Selector="RadioButton">
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="materialAssists:SelectionControlAssist.Size" Value="18" />
+    <!--  Text box  -->
+    <Style Selector="TextBox">
+      <Setter Property="FontSize" Value="14" />
+    </Style>
 
-            <Style Selector="^:checked, ^:unchecked">
-                <Style Selector="^ /template/ Ellipse#PART_HoverEffect">
-                    <Setter Property="Width" Value="32" />
-                    <Setter Property="Height" Value="32" />
-                </Style>
+    <!--  Toggle button  -->
+    <Style Selector="ToggleButton">
+      <Setter Property="TextElement.FontWeight" Value="Medium" />
+    </Style>
+
+    <!--  Toggle switch  -->
+    <Style Selector="ToggleSwitch">
+      <Setter
+        Property="materialAssists:ToggleSwitchAssist.SwitchThumbOffBackground"
+        Value="{DynamicResource ToggleBackgroundBrush}"
+      />
+    </Style>
+
+    <!--  Tooltip  -->
+    <Style Selector="ToolTip">
+      <Setter Property="TextElement.FontSize" Value="14" />
+      <Setter Property="TextElement.FontWeight" Value="Normal" />
+      <Setter Property="TextElement.FontStyle" Value="Normal" />
+      <Setter Property="TextElement.FontStretch" Value="Normal" />
+    </Style>
+  </Application.Styles>
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <!-- Fork-wide fixed dark palette. These brushes are deliberately not theme dictionaries,
+           so no unresolved Default theme key can enter the Material theme update path. -->
+      <SolidColorBrush x:Key="ForkBackgroundBrush" Color="#1E1F22" />
+      <SolidColorBrush x:Key="ForkPanelBrush" Color="#25262A" />
+      <SolidColorBrush x:Key="ForkSurfaceBrush" Color="#2B2D31" />
+      <SolidColorBrush x:Key="ForkSurfaceHoverBrush" Color="#34363C" />
+      <SolidColorBrush x:Key="ForkTextBrush" Color="#F5F5F5" />
+      <SolidColorBrush x:Key="ForkMutedTextBrush" Color="#D0D0D0" />
+      <SolidColorBrush x:Key="ForkBorderBrush" Color="#45474F" />
+      <SolidColorBrush x:Key="ToggleBackgroundBrush" Color="#777A82" />
+
+      <!--  Text box  -->
+      <ControlTheme
+        x:Key="CompactTextBox"
+        BasedOn="{StaticResource {x:Type TextBox}}"
+        TargetType="{x:Type TextBox}"
+      >
+        <Styles>
+          <Style Selector="TextBox">
+            <Setter Property="Height" Value="22" />
+            <Setter Property="Background" Value="{DynamicResource ForkPanelBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ForkTextBrush}" />
+
+            <Style Selector="^ /template/ Panel#PART_TextFieldPanel">
+              <Setter Property="MinHeight" Value="0" />
             </Style>
-        </Style>
 
-        <!--  Slider  -->
-        <Style Selector="Slider">
-            <Style Selector="^ /template/ ProgressBar#PART_ProgressLayer">
-                <Style Selector="^:horizontal">
-                    <Style Selector="^ Panel#PART_InnerPanel">
-                        <Setter Property="Height" Value="2" />
-
-                        <Style Selector="^ Border#PART_InactiveState">
-                            <Setter Property="Margin" Value="0" />
-                            <Setter Property="Height" Value="2" />
-                        </Style>
-
-                        <Style Selector="^ Border#PART_Indicator">
-                            <Setter Property="Margin" Value="0" />
-                        </Style>
-                    </Style>
-                </Style>
+            <Style Selector="^ /template/ Panel#PART_TextContainer">
+              <Setter Property="Margin" Value="0" />
             </Style>
+          </Style>
+        </Styles>
+      </ControlTheme>
+    </ResourceDictionary>
+  </Application.Resources>
 
-            <Style Selector="^ /template/ Track#PART_Track">
-                <Style Selector="^:horizontal">
-                    <Setter Property="Margin" Value="4,0" />
-                </Style>
-
-                <Style Selector="^ Border#PART_HoverEffect">
-                    <Setter Property="Width" Value="24" />
-                    <Setter Property="Height" Value="24" />
-                </Style>
-
-                <Style Selector="^ Border#PART_ThumbGrip">
-                    <Setter Property="Width" Value="12" />
-                    <Setter Property="Height" Value="12" />
-                </Style>
-            </Style>
-        </Style>
-
-        <!--  Text box  -->
-        <Style Selector="TextBox">
-            <Setter Property="FontSize" Value="14" />
-        </Style>
-
-        <!--  Toggle button  -->
-        <Style Selector="ToggleButton">
-            <Setter Property="TextElement.FontWeight" Value="Medium" />
-        </Style>
-
-        <!--  Toggle switch  -->
-        <Style Selector="ToggleSwitch">
-            <Setter Property="materialAssists:ToggleSwitchAssist.SwitchThumbOffBackground" Value="{DynamicResource ToggleBackgroundBrush}" />
-        </Style>
-
-        <!--  Tooltip  -->
-        <Style Selector="ToolTip">
-            <Setter Property="TextElement.FontSize" Value="14" />
-            <Setter Property="TextElement.FontWeight" Value="Normal" />
-            <Setter Property="TextElement.FontStyle" Value="Normal" />
-            <Setter Property="TextElement.FontStretch" Value="Normal" />
-        </Style>
-    </Application.Styles>
-
-    <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.ThemeDictionaries>
-                <ResourceDictionary x:Key="Default">
-                    <SolidColorBrush x:Key="ToggleBackgroundBrush" Color="#FFFFFF" />
-                </ResourceDictionary>
-                <ResourceDictionary x:Key="Dark">
-                    <SolidColorBrush x:Key="ToggleBackgroundBrush" Color="#8E8E8E" />
-                </ResourceDictionary>
-            </ResourceDictionary.ThemeDictionaries>
-
-            <!--  Text box  -->
-            <ControlTheme
-                x:Key="CompactTextBox"
-                BasedOn="{StaticResource {x:Type TextBox}}"
-                TargetType="{x:Type TextBox}">
-                <Styles>
-                    <Style Selector="TextBox">
-                        <Setter Property="Height" Value="22" />
-
-                        <Style Selector="^ /template/ Panel#PART_TextFieldPanel">
-                            <Setter Property="MinHeight" Value="0" />
-                        </Style>
-
-                        <Style Selector="^ /template/ Panel#PART_TextContainer">
-                            <Setter Property="Margin" Value="0" />
-                        </Style>
-                    </Style>
-                </Styles>
-            </ControlTheme>
-        </ResourceDictionary>
-    </Application.Resources>
-
-    <!--  Tray icon  -->
-    <TrayIcon.Icons>
-        <TrayIcons>
-            <TrayIcon
-                x:DataType="vm:MainViewModel"
-                Clicked="TrayIcon_OnClicked"
-                Icon="/favicon.ico"
-                ToolTipText="{Binding Dashboard.StatusText}">
-                <TrayIcon.Menu>
-                    <NativeMenu>
-                        <NativeMenuItem
-                            Click="TrayToggleWindowMenuItem_OnClick"
-                            Header="{Binding LocalizationManager.TrayHideMenuItem}"
-                            IsVisible="{Binding IsOpen}" />
-                        <NativeMenuItem
-                            Click="TrayToggleWindowMenuItem_OnClick"
-                            Header="{Binding LocalizationManager.TrayShowMenuItem}"
-                            IsVisible="{Binding !IsOpen}" />
-                        <NativeMenuItem Click="TrayShowSettingsMenuItem_OnClick" Header="{Binding LocalizationManager.TraySettingsMenuItem}" />
-                        <NativeMenuItemSeparator />
-                        <NativeMenuItem
-                            Command="{Binding Dashboard.ToggleCommand}"
-                            Header="{Binding LocalizationManager.TrayDisableMenuItem}"
-                            IsVisible="{Binding Dashboard.IsEnabled}" />
-                        <NativeMenuItem
-                            Command="{Binding Dashboard.ToggleCommand}"
-                            Header="{Binding LocalizationManager.TrayEnableMenuItem}"
-                            IsVisible="{Binding !Dashboard.IsEnabled}" />
-                        <NativeMenuItem Header="{Binding LocalizationManager.TrayDisableMenuItem}">
-                            <NativeMenu>
-                                <NativeMenuItem Command="{Binding Dashboard.DisableUntilSunriseCommand}" Header="{Binding LocalizationManager.TrayDisableUntilSunriseMenuItem}" />
-                                <NativeMenuItem Command="{Binding Dashboard.DisableTemporarilyCommand}" Header="{Binding LocalizationManager.TrayDisableFor1DayMenuItem}">
-                                    <NativeMenuItem.CommandParameter>
-                                        <sys:TimeSpan>1.00:00:00</sys:TimeSpan>
-                                    </NativeMenuItem.CommandParameter>
-                                </NativeMenuItem>
-                                <NativeMenuItem Command="{Binding Dashboard.DisableTemporarilyCommand}" Header="{Binding LocalizationManager.TrayDisableFor12HoursMenuItem}">
-                                    <NativeMenuItem.CommandParameter>
-                                        <sys:TimeSpan>0.12:00:00</sys:TimeSpan>
-                                    </NativeMenuItem.CommandParameter>
-                                </NativeMenuItem>
-                                <NativeMenuItem Command="{Binding Dashboard.DisableTemporarilyCommand}" Header="{Binding LocalizationManager.TrayDisableFor6HoursMenuItem}">
-                                    <NativeMenuItem.CommandParameter>
-                                        <sys:TimeSpan>0.06:00:00</sys:TimeSpan>
-                                    </NativeMenuItem.CommandParameter>
-                                </NativeMenuItem>
-                                <NativeMenuItem Command="{Binding Dashboard.DisableTemporarilyCommand}" Header="{Binding LocalizationManager.TrayDisableFor3HoursMenuItem}">
-                                    <NativeMenuItem.CommandParameter>
-                                        <sys:TimeSpan>0.03:00:00</sys:TimeSpan>
-                                    </NativeMenuItem.CommandParameter>
-                                </NativeMenuItem>
-                                <NativeMenuItem Command="{Binding Dashboard.DisableTemporarilyCommand}" Header="{Binding LocalizationManager.TrayDisableFor1HourMenuItem}">
-                                    <NativeMenuItem.CommandParameter>
-                                        <sys:TimeSpan>0.01:00:00</sys:TimeSpan>
-                                    </NativeMenuItem.CommandParameter>
-                                </NativeMenuItem>
-                                <NativeMenuItem Command="{Binding Dashboard.DisableTemporarilyCommand}" Header="{Binding LocalizationManager.TrayDisableFor30MinutesMenuItem}">
-                                    <NativeMenuItem.CommandParameter>
-                                        <sys:TimeSpan>0.00:30:00</sys:TimeSpan>
-                                    </NativeMenuItem.CommandParameter>
-                                </NativeMenuItem>
-                                <NativeMenuItem Command="{Binding Dashboard.DisableTemporarilyCommand}" Header="{Binding LocalizationManager.TrayDisableFor15MinutesMenuItem}">
-                                    <NativeMenuItem.CommandParameter>
-                                        <sys:TimeSpan>0.00:15:00</sys:TimeSpan>
-                                    </NativeMenuItem.CommandParameter>
-                                </NativeMenuItem>
-                                <NativeMenuItem Command="{Binding Dashboard.DisableTemporarilyCommand}" Header="{Binding LocalizationManager.TrayDisableFor5MinutesMenuItem}">
-                                    <NativeMenuItem.CommandParameter>
-                                        <sys:TimeSpan>0.00:05:00</sys:TimeSpan>
-                                    </NativeMenuItem.CommandParameter>
-                                </NativeMenuItem>
-                                <NativeMenuItem Command="{Binding Dashboard.DisableTemporarilyCommand}" Header="{Binding LocalizationManager.TrayDisableFor1MinuteMenuItem}">
-                                    <NativeMenuItem.CommandParameter>
-                                        <sys:TimeSpan>0.00:01:00</sys:TimeSpan>
-                                    </NativeMenuItem.CommandParameter>
-                                </NativeMenuItem>
-                            </NativeMenu>
-                        </NativeMenuItem>
-                        <NativeMenuItemSeparator />
-                        <NativeMenuItem Click="TrayExitMenuItem_OnClick" Header="{Binding LocalizationManager.TrayExitMenuItem}" />
-                    </NativeMenu>
-                </TrayIcon.Menu>
-            </TrayIcon>
-        </TrayIcons>
-    </TrayIcon.Icons>
-
+  <!--  Tray icon  -->
+  <TrayIcon.Icons>
+    <TrayIcons>
+      <TrayIcon
+        x:DataType="vm:MainViewModel"
+        Clicked="TrayIcon_OnClicked"
+        Icon="/favicon.ico"
+        ToolTipText="{Binding Dashboard.StatusText}"
+      >
+        <TrayIcon.Menu>
+          <NativeMenu NeedsUpdate="TrayMenu_OnNeedsUpdate">
+            <NativeMenuItem
+              Click="TrayToggleWindowMenuItem_OnClick"
+              Header="{Binding LocalizationManager.TrayHideMenuItem}"
+              IsVisible="{Binding IsOpen}"
+            />
+            <NativeMenuItem
+              Click="TrayToggleWindowMenuItem_OnClick"
+              Header="{Binding LocalizationManager.TrayShowMenuItem}"
+              IsVisible="{Binding !IsOpen}"
+            />
+            <NativeMenuItem
+              Click="TrayShowSettingsMenuItem_OnClick"
+              Header="{Binding LocalizationManager.TraySettingsMenuItem}"
+            />
+            <NativeMenuItem
+              Header="{Binding Dashboard.TrayProfilesMenuText}"
+              Menu="{Binding ProfilesMenu}"
+              ToolTip="{Binding Dashboard.ActiveProfileTooltip}"
+            />
+            <NativeMenuItem
+              Header="{Binding Dashboard.TrayToneProfilesMenuText}"
+              Menu="{Binding ToneProfilesMenu}"
+              ToolTip="{Binding Dashboard.ActiveToneProfileTooltip}"
+            />
+            <NativeMenuItem Header="{Binding LocalizationManager.TrayAdjustMenuItem}">
+              <NativeMenu>
+                <NativeMenuItem Click="TrayCoolerMenuItem_OnClick" Header="{Binding LocalizationManager.TrayCoolerMenuItem}" />
+                <NativeMenuItem Click="TrayWarmerMenuItem_OnClick" Header="{Binding LocalizationManager.TrayWarmerMenuItem}" />
+                <NativeMenuItemSeparator />
+                <NativeMenuItem Click="TrayBrighterMenuItem_OnClick" Header="{Binding LocalizationManager.TrayBrighterMenuItem}" />
+                <NativeMenuItem Click="TrayDimmerMenuItem_OnClick" Header="{Binding LocalizationManager.TrayDimmerMenuItem}" />
+                <NativeMenuItemSeparator />
+                <NativeMenuItem Header="{Binding Dashboard.TrayWheelHintText}" IsEnabled="False" />
+              </NativeMenu>
+            </NativeMenuItem>
+            <NativeMenuItem Header="{Binding LocalizationManager.TraySaveCurrentMenuItem}">
+              <NativeMenu>
+                <NativeMenuItem Click="TraySaveCurrentAsDayMenuItem_OnClick" Header="{Binding LocalizationManager.TraySaveCurrentAsDayMenuItem}" />
+                <NativeMenuItem Click="TraySaveCurrentAsNightMenuItem_OnClick" Header="{Binding LocalizationManager.TraySaveCurrentAsNightMenuItem}" />
+                <NativeMenuItem
+                  Click="TraySaveCurrentToProfileMenuItem_OnClick"
+                  Header="{Binding LocalizationManager.TraySaveCurrentToProfileMenuItem}"
+                  IsVisible="{Binding Dashboard.HasActiveProfile}"
+                />
+              </NativeMenu>
+            </NativeMenuItem>
+            <NativeMenuItemSeparator />
+            <NativeMenuItem
+              Command="{Binding Dashboard.ToggleCommand}"
+              Header="{Binding LocalizationManager.TrayDisableMenuItem}"
+              IsVisible="{Binding Dashboard.IsEnabled}"
+            />
+            <NativeMenuItem
+              Command="{Binding Dashboard.ToggleCommand}"
+              Header="{Binding LocalizationManager.TrayEnableMenuItem}"
+              IsVisible="{Binding !Dashboard.IsEnabled}"
+            />
+            <NativeMenuItem Header="{Binding LocalizationManager.TrayDisableTemporarilyMenuItem}">
+              <NativeMenu>
+                <NativeMenuItem
+                  Command="{Binding Dashboard.DisableUntilSunriseCommand}"
+                  Header="{Binding LocalizationManager.TrayDisableUntilSunriseMenuItem}"
+                />
+                <NativeMenuItem
+                  Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                  Header="{Binding LocalizationManager.TrayDisableFor1DayMenuItem}"
+                >
+                  <NativeMenuItem.CommandParameter>
+                    <sys:TimeSpan>1.00:00:00</sys:TimeSpan>
+                  </NativeMenuItem.CommandParameter>
+                </NativeMenuItem>
+                <NativeMenuItem
+                  Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                  Header="{Binding LocalizationManager.TrayDisableFor12HoursMenuItem}"
+                >
+                  <NativeMenuItem.CommandParameter>
+                    <sys:TimeSpan>0.12:00:00</sys:TimeSpan>
+                  </NativeMenuItem.CommandParameter>
+                </NativeMenuItem>
+                <NativeMenuItem
+                  Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                  Header="{Binding LocalizationManager.TrayDisableFor6HoursMenuItem}"
+                >
+                  <NativeMenuItem.CommandParameter>
+                    <sys:TimeSpan>0.06:00:00</sys:TimeSpan>
+                  </NativeMenuItem.CommandParameter>
+                </NativeMenuItem>
+                <NativeMenuItem
+                  Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                  Header="{Binding LocalizationManager.TrayDisableFor3HoursMenuItem}"
+                >
+                  <NativeMenuItem.CommandParameter>
+                    <sys:TimeSpan>0.03:00:00</sys:TimeSpan>
+                  </NativeMenuItem.CommandParameter>
+                </NativeMenuItem>
+                <NativeMenuItem
+                  Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                  Header="{Binding LocalizationManager.TrayDisableFor1HourMenuItem}"
+                >
+                  <NativeMenuItem.CommandParameter>
+                    <sys:TimeSpan>0.01:00:00</sys:TimeSpan>
+                  </NativeMenuItem.CommandParameter>
+                </NativeMenuItem>
+                <NativeMenuItem
+                  Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                  Header="{Binding LocalizationManager.TrayDisableFor30MinutesMenuItem}"
+                >
+                  <NativeMenuItem.CommandParameter>
+                    <sys:TimeSpan>0.00:30:00</sys:TimeSpan>
+                  </NativeMenuItem.CommandParameter>
+                </NativeMenuItem>
+                <NativeMenuItem
+                  Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                  Header="{Binding LocalizationManager.TrayDisableFor15MinutesMenuItem}"
+                >
+                  <NativeMenuItem.CommandParameter>
+                    <sys:TimeSpan>0.00:15:00</sys:TimeSpan>
+                  </NativeMenuItem.CommandParameter>
+                </NativeMenuItem>
+                <NativeMenuItem
+                  Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                  Header="{Binding LocalizationManager.TrayDisableFor5MinutesMenuItem}"
+                >
+                  <NativeMenuItem.CommandParameter>
+                    <sys:TimeSpan>0.00:05:00</sys:TimeSpan>
+                  </NativeMenuItem.CommandParameter>
+                </NativeMenuItem>
+                <NativeMenuItem
+                  Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                  Header="{Binding LocalizationManager.TrayDisableFor1MinuteMenuItem}"
+                >
+                  <NativeMenuItem.CommandParameter>
+                    <sys:TimeSpan>0.00:01:00</sys:TimeSpan>
+                  </NativeMenuItem.CommandParameter>
+                </NativeMenuItem>
+              </NativeMenu>
+            </NativeMenuItem>
+            <NativeMenuItemSeparator />
+            <NativeMenuItem
+              Click="TrayTemperatureControlMenuItem_OnClick"
+              CommandParameter="LightBulb.Tray.Temperature"
+              Header="{Binding Dashboard.TrayTemperatureControlText}"
+              ToolTip="{Binding LocalizationManager.TrayTemperatureControlTooltip}"
+            />
+            <NativeMenuItem
+              Click="TrayBrightnessControlMenuItem_OnClick"
+              CommandParameter="LightBulb.Tray.Brightness"
+              Header="{Binding Dashboard.TrayBrightnessControlText}"
+              ToolTip="{Binding LocalizationManager.TrayBrightnessControlTooltip}"
+            />
+            <NativeMenuItem
+              CommandParameter="LightBulb.Tray.Tone.Current"
+              Header="{Binding Dashboard.TrayTonesMenuText}"
+              ToolTip="{Binding LocalizationManager.TrayToneTargetTooltip}"
+            >
+              <NativeMenu>
+                <NativeMenuItem
+                  Click="TrayToneOffMenuItem_OnClick"
+                  CommandParameter="LightBulb.Tray.Tone.Off"
+                  Header="{Binding Dashboard.TrayToneEnableDisableMenuText}"
+                  IsEnabled="{Binding Dashboard.CanEnableToneLayer}"
+                  ToolTip="{Binding Dashboard.TrayToneEnableDisableTooltip}"
+                />
+                <NativeMenuItemSeparator />
+                <NativeMenuItem
+                  Click="TrayToneDarkMenuItem_OnClick"
+                  CommandParameter="LightBulb.Tray.Tone.Dark"
+                  Header="{Binding Dashboard.TrayDarkTonesControlText}"
+                  IsChecked="{Binding Dashboard.IsDarkTonesTarget}"
+                  ToggleType="Radio"
+                  ToolTip="{Binding LocalizationManager.TrayDarkTonesTooltip}"
+                />
+                <NativeMenuItem
+                  Click="TrayToneMidtonesMenuItem_OnClick"
+                  CommandParameter="LightBulb.Tray.Tone.Midtones"
+                  Header="{Binding Dashboard.TrayMidtonesControlText}"
+                  IsChecked="{Binding Dashboard.IsMidtonesTarget}"
+                  ToggleType="Radio"
+                  ToolTip="{Binding LocalizationManager.TrayMidtonesTooltip}"
+                />
+                <NativeMenuItem
+                  Click="TrayToneHighlightsMenuItem_OnClick"
+                  CommandParameter="LightBulb.Tray.Tone.Highlights"
+                  Header="{Binding Dashboard.TrayHighlightsControlText}"
+                  IsChecked="{Binding Dashboard.IsHighlightsTarget}"
+                  ToggleType="Radio"
+                  ToolTip="{Binding LocalizationManager.TrayHighlightsTooltip}"
+                />
+                <NativeMenuItem
+                  Click="TrayToneAllMenuItem_OnClick"
+                  CommandParameter="LightBulb.Tray.Tone.All"
+                  Header="{Binding Dashboard.TrayAllToneBandsControlText}"
+                  IsChecked="{Binding Dashboard.IsAllToneBandsTarget}"
+                  ToggleType="Radio"
+                  ToolTip="{Binding LocalizationManager.TrayAllToneBandsTooltip}"
+                />
+                <NativeMenuItemSeparator />
+                <NativeMenuItem
+                  Click="TrayToneResetMenuItem_OnClick"
+                  CommandParameter="LightBulb.Tray.Tone.Reset"
+                  Header="{Binding LocalizationManager.TrayToneResetMenuItem}"
+                  IsEnabled="{Binding Dashboard.IsToneEnabled}"
+                  ToolTip="{Binding LocalizationManager.TrayToneResetTooltip}"
+                />
+                <NativeMenuItem
+                  Header="{Binding LocalizationManager.TrayToneSaveExistingMenuItem}"
+                  IsEnabled="{Binding Dashboard.HasToneProfiles}"
+                  Menu="{Binding ToneSaveExistingMenu}"
+                />
+                <NativeMenuItem Click="TrayToneSaveNewMenuItem_OnClick" Header="{Binding LocalizationManager.TrayToneSaveNewMenuItem}" />
+              </NativeMenu>
+            </NativeMenuItem>
+            <NativeMenuItem
+              Click="TrayResetProfileMenuItem_OnClick"
+              Header="{Binding Dashboard.TrayResetControlText}"
+              IsEnabled="{Binding Dashboard.IsOffsetEnabled}"
+            />
+            <NativeMenuItemSeparator />
+            <NativeMenuItem
+              Click="TrayExitMenuItem_OnClick"
+              Header="{Binding LocalizationManager.TrayExitMenuItem}"
+            />
+          </NativeMenu>
+        </TrayIcon.Menu>
+      </TrayIcon>
+    </TrayIcons>
+  </TrayIcon.Icons>
 </Application>

@@ -11,3 +11,18 @@ Installer/Source/
 
 # Test results
 TestResults/
+
+# Local build and installer outputs
+artifacts/
+*.zip
+*.exe
+*.pdb
+*.log
+.env
+.env.*
+*.user
+*.local.json
+*.local.config
+*.pfx
+*.p12
+*.key

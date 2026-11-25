@@ -43,12 +43,12 @@ public partial class LocalizationManager
         [nameof(LanguageTooltip)] = "Langue d'interface préférée",
         [nameof(StartWithWindowsLabel)] = "Démarrer avec Windows",
         [nameof(StartWithWindowsTooltip)] = "Lancer LightBulb au démarrage de Windows",
-        [nameof(AutoUpdateLabel)] = "Mise à jour automatique",
-        [nameof(AutoUpdateTooltip)] =
-            "Mettre automatiquement LightBulb à jour vers la dernière version",
         [nameof(DefaultToDayConfigLabel)] = "Revenir à la configuration diurne",
         [nameof(DefaultToDayConfigTooltip)] =
             "Quand LightBulb est désactivé ou en pause, restaurer la température et la luminosité diurnes configurées au lieu du gamma par défaut du moniteur",
+        [nameof(DayNightCycleLabel)] = "Programme jour/nuit",
+        [nameof(DayNightCycleTooltip)] =
+            "Basculer automatiquement entre les configurations de jour et de nuit selon la méthode de lever/coucher du soleil sélectionnée. Si désactivé, Automatique conserve la configuration de jour; les profils ne sont pas affectés.",
         [nameof(PauseWhenFullscreenLabel)] = "Pause en plein écran",
         [nameof(PauseWhenFullscreenTooltip)] =
             "Mettre LightBulb en pause quand une fenêtre plein écran est au premier plan",
@@ -147,27 +147,7 @@ public partial class LocalizationManager
         [nameof(TrayDisableFor1MinuteMenuItem)] = "Pour 1 minute",
         [nameof(TrayExitMenuItem)] = "Quitter",
         [nameof(TrayTooltipDisabled)] = "Désactivé",
-        [nameof(UpdateAvailableTitle)] = "Mise à jour disponible",
-        [nameof(UpdateAvailableMessage)] = """
-            La mise à jour vers {0} v{1} a été téléchargée.
-            Voulez-vous l'installer maintenant ?
-            """,
-        [nameof(InstallButton)] = "INSTALLER",
         [nameof(CloseButton)] = "FERMER",
-        [nameof(UkraineSupportTitle)] = "Merci de soutenir l'Ukraine !",
-        [nameof(UkraineSupportMessage)] = """
-            Alors que la Russie mène une guerre génocidaire contre mon pays, je suis reconnaissant envers tous ceux qui continuent à soutenir l'Ukraine dans notre combat pour la liberté.
-
-            Cliquez sur EN SAVOIR PLUS pour trouver des moyens d'aider.
-            """,
-        [nameof(LearnMoreButton)] = "EN SAVOIR PLUS",
-        [nameof(UnstableBuildTitle)] = "Avertissement de build instable",
-        [nameof(UnstableBuildMessage)] = """
-            Vous utilisez un build de développement de {0}. Ces builds n'ont pas été soigneusement testés et peuvent contenir des bogues.
-
-            Les mises à jour automatiques sont désactivées pour les builds de développement. Si vous souhaitez passer à une version stable, veuillez la télécharger manuellement.
-            """,
-        [nameof(SeeReleasesButton)] = "VOIR LES VERSIONS",
         [nameof(LimitedGammaRangeTitle)] = "Plage gamma limitée",
         [nameof(LimitedGammaRangeMessage)] = """
             {0} a détecté que les contrôles de plage gamma étendue ne sont pas activés sur ce système.
@@ -176,13 +156,5 @@ public partial class LocalizationManager
             Appuyez sur CORRIGER pour déverrouiller la plage gamma. Des droits d'administrateur peuvent être requis.
             """,
         [nameof(FixButton)] = "CORRIGER",
-        [nameof(WelcomeTitle)] = "Bienvenue !",
-        [nameof(WelcomeMessage)] = """
-            Merci d'avoir installé {0} !
-            Pour une expérience plus personnalisée, veuillez définir votre configuration solaire préférée.
-
-            Appuyez sur OK pour ouvrir les paramètres.
-            """,
-        [nameof(OkButton)] = "OK",
     };
 }

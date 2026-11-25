@@ -13,12 +13,15 @@ public class SettingsTabToMaterialIconKindConverter : IValueConverter
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         value switch
         {
-            GeneralSettingsTabViewModel => MaterialIconKind.Settings,
+            // Use distinct icons already proven by the existing Material.Icons package in this app.
+            GeneralSettingsTabViewModel => MaterialIconKind.WhiteBalanceSunny,
+            ProfileSettingsTabViewModel => MaterialIconKind.Apps,
+            ToneProfileSettingsTabViewModel => MaterialIconKind.WhiteBalanceSunny,
             LocationSettingsTabViewModel => MaterialIconKind.Globe,
-            AdvancedSettingsTabViewModel => MaterialIconKind.CheckboxesMarked,
-            ApplicationWhitelistSettingsTabViewModel => MaterialIconKind.Apps,
             HotKeySettingsTabViewModel => MaterialIconKind.Keyboard,
-            // Shouldn't happen
+            ApplicationWhitelistSettingsTabViewModel => MaterialIconKind.CheckboxesMarked,
+            AdvancedSettingsTabViewModel => MaterialIconKind.Settings,
+            LogSettingsTabViewModel => MaterialIconKind.Cancel,
             _ => MaterialIconKind.QuestionMark,
         };
 

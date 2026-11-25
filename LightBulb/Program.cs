@@ -13,20 +13,19 @@ public static class Program
 
     public static string Name { get; } = Assembly.GetName().Name ?? "LightBulb";
 
+    private static string ExitRequestEventName => $@"Local\{Name}_ExitRequest";
+
     public static Version Version { get; } = Assembly.GetName().Version ?? new Version(0, 0, 0);
 
-    public static string VersionString { get; } = Version.ToString(3);
-
-    public static bool IsDevelopmentBuild { get; } = Version.Major is <= 0 or >= 999;
+    public static string VersionString { get; } =
+        Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
+        ?? Version.ToString(3);
 
     public static string ExecutableDirPath { get; } = AppContext.BaseDirectory;
 
     public static string ExecutableFilePath { get; } =
-        Path.ChangeExtension(Assembly.Location, "exe");
-
-    public static string ProjectUrl { get; } = "https://github.com/Tyrrrz/LightBulb";
-
-    public static string ProjectReleasesUrl { get; } = $"{ProjectUrl}/releases";
+        Environment.ProcessPath
+        ?? Path.ChangeExtension(Assembly.Location, "exe");
 
     public static AppBuilder BuildAvaloniaApp() =>
         AppBuilder
@@ -48,7 +47,25 @@ public static class Program
     [STAThread]
     public static int Main(string[] args)
     {
-        // Ensure only one instance of the app is running at a time
+        // Installer/control path: signal the already-running instance before the single-instance
+        // mutex check. This gives upgrades a graceful exit path even though the desktop lifetime
+        // intentionally uses ShutdownMode.OnExplicitShutdown.
+        if (
+            Array.Exists(
+                args,
+                argument => string.Equals(
+                    argument,
+                    StartOptions.ExitExistingArgument,
+                    StringComparison.OrdinalIgnoreCase
+                )
+            )
+        )
+        {
+            SignalExistingInstanceToExit();
+            return 0;
+        }
+
+        // Ensure only one instance of the app is running at a time.
         using var identityMutex = new Mutex(
             true,
             $"{Name}_Identity",
@@ -58,7 +75,25 @@ public static class Program
         if (!isOnlyRunningInstance)
             return 1;
 
-        // Build and run the app
+        EventWaitHandle? exitRequestEvent = null;
+        RegisteredWaitHandle? exitRequestRegistration = null;
+        if (OperatingSystem.IsWindows())
+        {
+            exitRequestEvent = new EventWaitHandle(
+                false,
+                EventResetMode.AutoReset,
+                ExitRequestEventName
+            );
+            exitRequestRegistration = ThreadPool.RegisterWaitForSingleObject(
+                exitRequestEvent,
+                (_, _) => Avalonia.Threading.Dispatcher.UIThread.Post(() => App.Shutdown()),
+                null,
+                Timeout.Infinite,
+                executeOnlyOnce: false
+            );
+        }
+
+        // Build and run the app.
         var builder = BuildAvaloniaApp();
 
         try
@@ -67,14 +102,39 @@ public static class Program
         }
         catch (Exception ex)
         {
+            Services.AppLogService.WriteEmergency(nameof(Program), "Fatal application error.", ex);
             MessageBox.ShowError("Fatal Error", ex.ToString());
             throw;
         }
         finally
         {
-            // Clean up after application shutdown
+            exitRequestRegistration?.Unregister(null);
+            exitRequestEvent?.Dispose();
+
+            // Clean up after application shutdown.
             if (builder.Instance is IDisposable disposableApp)
                 disposableApp.Dispose();
+        }
+    }
+
+    private static void SignalExistingInstanceToExit()
+    {
+        if (!OperatingSystem.IsWindows())
+            return;
+
+        try
+        {
+            using var exitRequestEvent = EventWaitHandle.OpenExisting(ExitRequestEventName);
+            exitRequestEvent.Set();
+        }
+        catch (WaitHandleCannotBeOpenedException)
+        {
+            // No running 0.20+ instance is listening. The installer has a process-kill fallback for
+            // older 0.19 instances and crashed/stuck processes.
+        }
+        catch (UnauthorizedAccessException)
+        {
+            // Elevated/non-elevated object access can differ. The installer fallback handles this.
         }
     }
 }

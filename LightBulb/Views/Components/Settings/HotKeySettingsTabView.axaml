@@ -1,110 +1,150 @@
 <UserControl
-    x:Class="LightBulb.Views.Components.Settings.HotKeySettingsTabView"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:LightBulb.Views.Controls"
-    xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
-    x:DataType="settings:HotKeySettingsTabViewModel">
-    <StackPanel
-        Margin="16"
-        Orientation="Vertical"
-        Spacing="16">
-        <!--  Toggle hotkey  -->
-        <Grid ColumnDefinitions="*,Auto">
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.ToggleLightBulbHotkeyLabel}"
-                TextTrimming="CharacterEllipsis"
-                ToolTip.Tip="{Binding LocalizationManager.ToggleLightBulbHotkeyTooltip}" />
-            <controls:HotKeyTextBox
-                Grid.Column="1"
-                Width="120"
-                HotKey="{Binding ToggleHotKey}" />
-        </Grid>
+  x:Class="LightBulb.Views.Components.Settings.HotKeySettingsTabView"
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:controls="clr-namespace:LightBulb.Views.Controls"
+  xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
+  x:DataType="settings:HotKeySettingsTabViewModel"
+>
+  <StackPanel Margin="16" Orientation="Vertical" Spacing="16">
+    <!--  Toggle hotkey  -->
+    <Grid ColumnDefinitions="2*,*">
+      <TextBlock
+        Grid.Column="0"
+        VerticalAlignment="Center"
+        Text="{Binding LocalizationManager.ToggleLightBulbHotkeyLabel}"
+        TextWrapping="Wrap"
+        ToolTip.Tip="{Binding LocalizationManager.ToggleLightBulbHotkeyTooltip}"
+      />
+      <controls:HotKeyTextBox Grid.Column="1" MinWidth="120" HorizontalAlignment="Stretch" HotKey="{Binding ToggleHotKey}" />
+    </Grid>
 
-        <!--  Toggle window hotkey  -->
-        <Grid ColumnDefinitions="*,Auto">
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.ToggleWindowLabel}"
-                TextTrimming="CharacterEllipsis"
-                ToolTip.Tip="{Binding LocalizationManager.ToggleWindowHotkeyTooltip}" />
-            <controls:HotKeyTextBox
-                Grid.Column="1"
-                Width="120"
-                HotKey="{Binding ToggleWindowHotKey}" />
-        </Grid>
+    <!--  Toggle window hotkey  -->
+    <Grid ColumnDefinitions="2*,*">
+      <TextBlock
+        Grid.Column="0"
+        VerticalAlignment="Center"
+        Text="{Binding LocalizationManager.ToggleWindowLabel}"
+        TextWrapping="Wrap"
+        ToolTip.Tip="{Binding LocalizationManager.ToggleWindowHotkeyTooltip}"
+      />
+      <controls:HotKeyTextBox Grid.Column="1" MinWidth="120" HorizontalAlignment="Stretch" HotKey="{Binding ToggleWindowHotKey}" />
+    </Grid>
 
-        <!--  Increase temperature offset hotkey  -->
-        <Grid ColumnDefinitions="*,Auto">
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.IncreaseTemperatureOffsetLabel}"
-                TextTrimming="CharacterEllipsis"
-                ToolTip.Tip="{Binding LocalizationManager.IncreaseTemperatureOffsetTooltip}" />
-            <controls:HotKeyTextBox
-                Grid.Column="1"
-                Width="120"
-                HotKey="{Binding IncreaseTemperatureOffsetHotKey}" />
-        </Grid>
+    <!--  Increase temperature offset hotkey  -->
+    <Grid ColumnDefinitions="2*,*">
+      <TextBlock
+        Grid.Column="0"
+        VerticalAlignment="Center"
+        Text="{Binding LocalizationManager.IncreaseTemperatureOffsetLabel}"
+        TextWrapping="Wrap"
+        ToolTip.Tip="{Binding LocalizationManager.IncreaseTemperatureOffsetTooltip}"
+      />
+      <controls:HotKeyTextBox
+        Grid.Column="1"
+        MinWidth="120" HorizontalAlignment="Stretch"
+        HotKey="{Binding IncreaseTemperatureOffsetHotKey}"
+      />
+    </Grid>
 
-        <!--  Decrease temperature offset hotkey  -->
-        <Grid ColumnDefinitions="*,Auto">
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.DecreaseTemperatureOffsetLabel}"
-                TextTrimming="CharacterEllipsis"
-                ToolTip.Tip="{Binding LocalizationManager.DecreaseTemperatureOffsetTooltip}" />
-            <controls:HotKeyTextBox
-                Grid.Column="1"
-                Width="120"
-                HotKey="{Binding DecreaseTemperatureOffsetHotKey}" />
-        </Grid>
+    <!--  Decrease temperature offset hotkey  -->
+    <Grid ColumnDefinitions="2*,*">
+      <TextBlock
+        Grid.Column="0"
+        VerticalAlignment="Center"
+        Text="{Binding LocalizationManager.DecreaseTemperatureOffsetLabel}"
+        TextWrapping="Wrap"
+        ToolTip.Tip="{Binding LocalizationManager.DecreaseTemperatureOffsetTooltip}"
+      />
+      <controls:HotKeyTextBox
+        Grid.Column="1"
+        MinWidth="120" HorizontalAlignment="Stretch"
+        HotKey="{Binding DecreaseTemperatureOffsetHotKey}"
+      />
+    </Grid>
 
-        <!--  Increase brightness offset hotkey  -->
-        <Grid ColumnDefinitions="*,Auto">
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.IncreaseBrightnessOffsetLabel}"
-                TextTrimming="CharacterEllipsis"
-                ToolTip.Tip="{Binding LocalizationManager.IncreaseBrightnessOffsetTooltip}" />
-            <controls:HotKeyTextBox
-                Grid.Column="1"
-                Width="120"
-                HotKey="{Binding IncreaseBrightnessOffsetHotKey}" />
-        </Grid>
+    <!--  Increase brightness offset hotkey  -->
+    <Grid ColumnDefinitions="2*,*">
+      <TextBlock
+        Grid.Column="0"
+        VerticalAlignment="Center"
+        Text="{Binding LocalizationManager.IncreaseBrightnessOffsetLabel}"
+        TextWrapping="Wrap"
+        ToolTip.Tip="{Binding LocalizationManager.IncreaseBrightnessOffsetTooltip}"
+      />
+      <controls:HotKeyTextBox
+        Grid.Column="1"
+        MinWidth="120" HorizontalAlignment="Stretch"
+        HotKey="{Binding IncreaseBrightnessOffsetHotKey}"
+      />
+    </Grid>
 
-        <!--  Decrease brightness offset hotkey  -->
-        <Grid ColumnDefinitions="*,Auto">
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.DecreaseBrightnessOffsetLabel}"
-                TextTrimming="CharacterEllipsis"
-                ToolTip.Tip="{Binding LocalizationManager.DecreaseBrightnessOffsetTooltip}" />
-            <controls:HotKeyTextBox
-                Grid.Column="1"
-                Width="120"
-                HotKey="{Binding DecreaseBrightnessOffsetHotKey}" />
-        </Grid>
+    <!--  Decrease brightness offset hotkey  -->
+    <Grid ColumnDefinitions="2*,*">
+      <TextBlock
+        Grid.Column="0"
+        VerticalAlignment="Center"
+        Text="{Binding LocalizationManager.DecreaseBrightnessOffsetLabel}"
+        TextWrapping="Wrap"
+        ToolTip.Tip="{Binding LocalizationManager.DecreaseBrightnessOffsetTooltip}"
+      />
+      <controls:HotKeyTextBox
+        Grid.Column="1"
+        MinWidth="120" HorizontalAlignment="Stretch"
+        HotKey="{Binding DecreaseBrightnessOffsetHotKey}"
+      />
+    </Grid>
 
-        <!--  Reset offset hotkey  -->
-        <Grid ColumnDefinitions="*,Auto">
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.ResetOffsetLabel}"
-                TextTrimming="CharacterEllipsis"
-                ToolTip.Tip="{Binding LocalizationManager.ResetOffsetHotkeyTooltip}" />
-            <controls:HotKeyTextBox
-                Grid.Column="1"
-                Width="120"
-                HotKey="{Binding ResetConfigurationOffsetHotKey}" />
-        </Grid>
-    </StackPanel>
+    <!--  Reset offset hotkey  -->
+    <Grid ColumnDefinitions="2*,*">
+      <TextBlock
+        Grid.Column="0"
+        VerticalAlignment="Center"
+        Text="{Binding LocalizationManager.ResetOffsetLabel}"
+        TextWrapping="Wrap"
+        ToolTip.Tip="{Binding LocalizationManager.ResetOffsetHotkeyTooltip}"
+      />
+      <controls:HotKeyTextBox
+        Grid.Column="1"
+        MinWidth="120" HorizontalAlignment="Stretch"
+        HotKey="{Binding ResetConfigurationOffsetHotKey}"
+      />
+    </Grid>
+
+
+    <Grid ColumnDefinitions="2*,*">
+      <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{Binding LocalizationManager.CycleProfilesLabel}" TextWrapping="Wrap" ToolTip.Tip="{Binding LocalizationManager.CycleProfilesTooltip}" />
+      <controls:HotKeyTextBox Grid.Column="1" MinWidth="120" HorizontalAlignment="Stretch" HotKey="{Binding CycleProfilesHotKey}" />
+    </Grid>
+
+    <Grid ColumnDefinitions="2*,*">
+      <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{Binding LocalizationManager.ToggleLastProfileLabel}" TextWrapping="Wrap" ToolTip.Tip="{Binding LocalizationManager.ToggleLastProfileTooltip}" />
+      <controls:HotKeyTextBox Grid.Column="1" MinWidth="120" HorizontalAlignment="Stretch" HotKey="{Binding ToggleLastProfileHotKey}" />
+    </Grid>
+
+    <TextBlock
+      FontSize="11"
+      Opacity="0.75"
+      Text="{Binding InputHint}"
+      TextWrapping="Wrap"
+    />
+
+    <TextBlock
+      FontSize="11"
+      FontWeight="SemiBold"
+      IsVisible="{Binding HasRegistrationError}"
+      Text="{Binding RegistrationErrorText}"
+      TextWrapping="Wrap"
+    />
+
+    <TextBlock
+      FontSize="11"
+      FontWeight="SemiBold"
+      Foreground="#FFD48A"
+      IsVisible="{Binding HasConflictWarning}"
+      Text="{Binding ConflictWarningText}"
+      TextWrapping="Wrap"
+    />
+
+  </StackPanel>
 </UserControl>

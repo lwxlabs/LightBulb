@@ -41,6 +41,7 @@ public class DialogManager : IDisposable
         }
         finally
         {
+            dialog.Dispose();
             _dialogLock.Release();
         }
     }

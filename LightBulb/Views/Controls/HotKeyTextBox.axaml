@@ -1,13 +1,26 @@
 <UserControl
-    x:Class="LightBulb.Views.Controls.HotKeyTextBox"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:LightBulb.Views.Controls">
+  x:Class="LightBulb.Views.Controls.HotKeyTextBox"
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+>
+  <Grid ColumnDefinitions="*,28" ColumnSpacing="4">
     <TextBox
-        x:Name="TextBox"
-        IsReadOnly="True"
-        IsUndoEnabled="False"
-        Text="{Binding $parent[controls:HotKeyTextBox].HotKey, Mode=OneWay}"
-        TextAlignment="Center"
-        Theme="{DynamicResource CompactTextBox}" />
+      x:Name="TextBox"
+      Grid.Column="0"
+      IsReadOnly="True"
+      IsUndoEnabled="False"
+      TextAlignment="Center"
+      Theme="{DynamicResource CompactTextBox}"
+    />
+    <Button
+      x:Name="ResetButton"
+      Grid.Column="1"
+      Padding="0"
+      Click="ResetButton_OnClick"
+      Content="×"
+      FontSize="16"
+      Theme="{DynamicResource MaterialFlatButton}"
+      ToolTip.Tip="Clear shortcut"
+    />
+  </Grid>
 </UserControl>

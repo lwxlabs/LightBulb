@@ -41,11 +41,12 @@ public partial class LocalizationManager
             [nameof(LanguageTooltip)] = "Бажана мова інтерфейсу",
             [nameof(StartWithWindowsLabel)] = "Запускати з Windows",
             [nameof(StartWithWindowsTooltip)] = "Запускати LightBulb при старті Windows",
-            [nameof(AutoUpdateLabel)] = "Авто-оновлення",
-            [nameof(AutoUpdateTooltip)] = "Автоматично оновлювати LightBulb до останньої версії",
             [nameof(DefaultToDayConfigLabel)] = "Повертатись до денної конфігурації",
             [nameof(DefaultToDayConfigTooltip)] =
                 "Коли LightBulb вимкнено або призупинено, відновлювати налаштовану денну температуру та яскравість замість гами монітора за замовчуванням",
+            [nameof(DayNightCycleLabel)] = "Розклад день/ніч",
+            [nameof(DayNightCycleTooltip)] =
+                "Автоматично перемикатися між денними й нічними налаштуваннями за вибраним методом сходу/заходу сонця. Якщо вимкнено, автоматичний режим постійно використовує денну конфігурацію; профілі не змінюються.",
             [nameof(PauseWhenFullscreenLabel)] = "Призупиняти при повноекранному режимі",
             [nameof(PauseWhenFullscreenTooltip)] =
                 "Призупиняти LightBulb, коли будь-яке повноекранне вікно знаходиться на передньому плані",
@@ -144,27 +145,7 @@ public partial class LocalizationManager
             [nameof(TrayDisableFor1MinuteMenuItem)] = "На 1 хвилину",
             [nameof(TrayExitMenuItem)] = "Вийти",
             [nameof(TrayTooltipDisabled)] = "Вимкнено",
-            [nameof(UpdateAvailableTitle)] = "Доступне оновлення",
-            [nameof(UpdateAvailableMessage)] = """
-                Оновлення до {0} v{1} завантажено.
-                Встановити зараз?
-                """,
-            [nameof(InstallButton)] = "ВСТАНОВИТИ",
             [nameof(CloseButton)] = "ЗАКРИТИ",
-            [nameof(UkraineSupportTitle)] = "Дякуємо за підтримку України!",
-            [nameof(UkraineSupportMessage)] = """
-                Поки Росія веде геноцидну війну проти моєї країни, я вдячний кожному, хто продовжує підтримувати Україну в нашій боротьбі за свободу.
-
-                Натисніть ДІЗНАТИСЯ БІЛЬШЕ, щоб знайти способи допомоги.
-                """,
-            [nameof(LearnMoreButton)] = "ДІЗНАТИСЯ БІЛЬШЕ",
-            [nameof(UnstableBuildTitle)] = "Попередження про нестабільну збірку",
-            [nameof(UnstableBuildMessage)] = """
-                Ви використовуєте збірку розробника {0}. Ці збірки не пройшли ретельного тестування і можуть містити помилки.
-
-                Автоматичні оновлення вимкнені для збірок розробника. Якщо ви хочете перейти на стабільний реліз, завантажте його вручну.
-                """,
-            [nameof(SeeReleasesButton)] = "ПЕРЕГЛЯНУТИ РЕЛІЗИ",
             [nameof(LimitedGammaRangeTitle)] = "Обмежений діапазон гами",
             [nameof(LimitedGammaRangeMessage)] = """
                 {0} виявив, що розширені засоби керування діапазоном гами не увімкнені в цій системі.
@@ -173,13 +154,5 @@ public partial class LocalizationManager
                 Натисніть ВИПРАВИТИ для розблокування діапазону гами. Можуть знадобитися права адміністратора.
                 """,
             [nameof(FixButton)] = "ВИПРАВИТИ",
-            [nameof(WelcomeTitle)] = "Ласкаво просимо!",
-            [nameof(WelcomeMessage)] = """
-                Дякуємо за встановлення {0}!
-                Для найкращого персоналізованого досвіду, будь ласка, налаштуйте бажану сонячну конфігурацію.
-
-                Натисніть ОК для відкриття налаштувань.
-                """,
-            [nameof(OkButton)] = "ОК",
         };
 }

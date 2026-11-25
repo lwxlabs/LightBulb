@@ -12,13 +12,16 @@ namespace LightBulb.ViewModels.Components.Settings;
 public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase
 {
     private readonly IDisposable _eventSubscription;
+    private readonly AppLogService _logService;
 
     public LocationSettingsTabViewModel(
         SettingsService settingsService,
-        LocalizationManager localizationManager
+        LocalizationManager localizationManager,
+        AppLogService logService
     )
-        : base(settingsService, localizationManager, 1)
+        : base(settingsService, localizationManager, 3)
     {
+        _logService = logService;
         _eventSubscription = this.WatchProperty(
             o => o.Location,
             v => LocationQuery = v?.ToString(),
@@ -79,9 +82,10 @@ public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase
         {
             Location = await GeoLocation.GetCurrentAsync();
         }
-        catch
+        catch (Exception ex)
         {
             IsLocationError = true;
+            _logService.Warning(nameof(LocationSettingsTabViewModel), $"Automatic location lookup failed: {ex.Message}");
         }
         finally
         {
@@ -112,9 +116,10 @@ public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase
             Location =
                 GeoLocation.TryParse(LocationQuery) ?? await GeoLocation.SearchAsync(LocationQuery);
         }
-        catch
+        catch (Exception ex)
         {
             IsLocationError = true;
+            _logService.Warning(nameof(LocationSettingsTabViewModel), $"Location lookup failed: {ex.Message}");
         }
         finally
         {

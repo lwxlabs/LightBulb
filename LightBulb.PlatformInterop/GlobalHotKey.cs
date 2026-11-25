@@ -57,7 +57,12 @@ public partial class GlobalHotKey
 {
     private static int _lastHotKeyHandle;
 
-    public static GlobalHotKey? TryRegister(int virtualKey, int modifiers, Action callback)
+    public static GlobalHotKey? TryRegister(
+        int virtualKey,
+        int modifiers,
+        Action callback,
+        out int errorCode
+    )
     {
         var handle = Interlocked.Increment(ref _lastHotKeyHandle);
 
@@ -70,14 +75,17 @@ public partial class GlobalHotKey
             )
         )
         {
+            errorCode = Marshal.GetLastWin32Error();
+
             Debug.WriteLine(
                 $"Failed to register global hotkey (key: {virtualKey}, mods: {modifiers}). "
-                    + $"Error {Marshal.GetLastWin32Error()}."
+                    + $"Error {errorCode}."
             );
 
             return null;
         }
 
+        errorCode = 0;
         return new GlobalHotKey(handle, callback);
     }
 }

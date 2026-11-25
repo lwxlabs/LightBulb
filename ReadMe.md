@@ -1,68 +1,35 @@
-# LightBulb
+# LightBulb — Extended Edition
 
-[![Status](https://img.shields.io/badge/status-maintenance-ffd700.svg)](https://github.com/Tyrrrz/.github/blob/prime/docs/project-status.md)
-[![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7)](https://tyrrrz.me/ukraine)
-[![Build](https://img.shields.io/github/actions/workflow/status/Tyrrrz/LightBulb/main.yml?branch=prime)](https://github.com/Tyrrrz/LightBulb/actions)
-[![Coverage](https://img.shields.io/codecov/c/github/Tyrrrz/LightBulb/prime)](https://codecov.io/gh/Tyrrrz/LightBulb)
-[![Release](https://img.shields.io/github/release/Tyrrrz/LightBulb.svg)](https://github.com/Tyrrrz/LightBulb/releases)
-[![Downloads](https://img.shields.io/github/downloads/Tyrrrz/LightBulb/total.svg)](https://github.com/Tyrrrz/LightBulb/releases)
-[![Discord](https://img.shields.io/discord/869237470565392384?label=discord)](https://discord.gg/2SUWKFnHSm)
-[![Fuck Russia](https://img.shields.io/badge/fuck-russia-e4181c.svg?labelColor=000000)](https://twitter.com/tyrrrz/status/1495972128977571848)
+A customized Windows fork of [Tyrrrz/LightBulb](https://github.com/Tyrrrz/LightBulb), based on upstream [2.7.1](https://github.com/Tyrrrz/LightBulb/tree/2.7.1). LightBulb adjusts display gamma, brightness and color temperature to help reduce eyestrain.
 
-<table>
-    <tr>
-        <td width="99999" align="center">Development of this project is entirely funded by the community. <b><a href="https://tyrrrz.me/donate">Consider donating to support!</a></b></td>
-    </tr>
-</table>
+## Extended features
 
-<p align="center">
-    <img src="favicon.png" alt="Icon" />
-</p>
+- Display profiles with adjustable brightness and color temperature, shortcuts, cycling and persistent manual adjustments.
+- Independent shadow, midtone and highlight adjustments, reusable tone profiles and highlight-dimming presets.
+- Global keyboard shortcuts and programmable key/mouse combinations, with conflict warnings.
+- Tray controls for brightness, color temperature, tone intensity and profiles.
+- Touch-friendly quick-adjust window and configurable tray actions.
+- Resizable settings window, dark theme, startup options and diagnostic log.
+- Self-contained Windows x64 installer.
 
-**LightBulb** is an application that reduces eyestrain produced by staring at a computer screen when working late hours.
-As the day goes on, it continuously adjusts gamma, transitioning the display color temperature from cold blue in the afternoon to warm yellow during the night.
-Its primary objective is to match the color of the screen to the light sources of your surrounding environment — sunlight during the day and artificial light during the night.
-**LightBulb** has minimal impact on performance and offers many customization options.
+The original automatic day/night cycle, location settings and application whitelist are retained.
 
-> ❔ If you have questions or issues, **please refer to the [wiki](https://github.com/Tyrrrz/LightBulb/wiki)**.
+## Build
 
-## Terms of use<sup>[[?]](https://github.com/Tyrrrz/.github/blob/prime/docs/why-so-political.md)</sup>
+Requires the .NET 10 SDK and Windows.
 
-By using this project or its source code, for any purpose and in any shape or form, you grant your **implicit agreement** to all the following statements:
+    dotnet restore LightBulb.slnx
+    dotnet build LightBulb.slnx -c Release --no-restore -p:CSharpier_Bypass=true
+    dotnet test LightBulb.slnx -c Release --no-build
 
-- You **condemn Russia and its military aggression against Ukraine**
-- You **recognize that Russia is an occupant that unlawfully invaded a sovereign state**
-- You **support Ukraine's territorial integrity, including its claims over temporarily occupied territories of Crimea and Donbas**
-- You **reject false narratives perpetuated by Russian state propaganda**
+To create a self-contained installer, compile LightBulb-custom-setup.iss using Inno Setup 6. The script publishes the Windows x64 application and packages it locally in artifacts/Installer.
 
-To learn more about the war and how you can help, [click here](https://tyrrrz.me/ukraine). Glory to Ukraine! 🇺🇦
+The installer retains the upstream application ID for upgrade compatibility. It is an alternative build of LightBulb, not a side-by-side installation. Review the installation choice if you already have the original application installed.
 
-## Download
+## Version
 
-- 🟢 [**Stable release**](https://github.com/Tyrrrz/LightBulb/releases)
-- 🟠 [CI build](https://github.com/Tyrrrz/LightBulb/actions/workflows/main.yml)
-- 📦 [WinGet](https://winget.run/pkg/Tyrrrz/LightBulb): `winget install Tyrrrz.LightBulb` (community-maintained)
-- 📦 [Scoop](https://scoop.sh/#/apps?q=LightBulb&p=1&id=9639ce8d7756b4c8a252368ef718c25b5a3b4ce0): `scoop install extras/lightbulb` (community-maintained)
-- 📦 [Chocolatey](https://push.chocolatey.org/packages/lightbulb): `choco install lightbulb` (community-maintained)
+2.7.1-forked-0.20 (assembly/file version 2.7.1.20). See [fork notes](FORK-NOTES.md) for changes.
 
-> [!NOTE]
-> Community-maintained packages are published independently from this repository and may not always be up to date with the latest release.
+## Attribution
 
-> [!NOTE]
-> If you're unsure which build is right for your system, consult with [this page](https://useragent.cc) to determine your OS and CPU architecture.
-
-## Features
-
-- Extensive customization options
-- Location-based sunrise and sunset times
-- Manual sunrise and sunset times
-- Whitelist for color-sensitive applications
-- Global hotkeys for adjusting on the fly
-- Smooth gamma transitions
-- Minimal performance impact
-- Works without internet connection
-
-## Screenshots
-
-![dashboard](.assets/dashboard.png)
-![settings](.assets/settings.png)
+Original LightBulb by Oleksii Holub ([Tyrrrz](https://github.com/Tyrrrz)). Extended modifications by LwXLabs. This is an independent fork, not an official upstream release. Distributed under the original [MIT license](License.txt).

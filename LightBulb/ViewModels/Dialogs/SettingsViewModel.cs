@@ -71,4 +71,15 @@ public partial class SettingsViewModel : DialogViewModelBase
         _settingsService.Load();
         Close(false);
     }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            foreach (var tab in Tabs)
+                tab.Dispose();
+        }
+
+        base.Dispose(disposing);
+    }
 }

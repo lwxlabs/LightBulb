@@ -23,8 +23,11 @@ public partial class ViewManager
             AdvancedSettingsTabViewModel => new AdvancedSettingsTabView(),
             ApplicationWhitelistSettingsTabViewModel => new ApplicationWhitelistSettingsTabView(),
             GeneralSettingsTabViewModel => new GeneralSettingsTabView(),
+            ProfileSettingsTabViewModel => new ProfileSettingsTabView(),
+            ToneProfileSettingsTabViewModel => new ToneProfileSettingsTabView(),
             HotKeySettingsTabViewModel => new HotKeySettingsTabView(),
             LocationSettingsTabViewModel => new LocationSettingsTabView(),
+            LogSettingsTabViewModel => new LogSettingsTabView(),
             _ => null,
         };
 

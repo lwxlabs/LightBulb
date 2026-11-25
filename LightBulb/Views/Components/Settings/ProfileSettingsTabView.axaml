@@ -1,0 +1,191 @@
+<UserControl
+  x:Class="LightBulb.Views.Components.Settings.ProfileSettingsTabView"
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:controls="clr-namespace:LightBulb.Views.Controls"
+  xmlns:converters="clr-namespace:LightBulb.Converters"
+  xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
+  x:DataType="settings:ProfileSettingsTabViewModel"
+>
+  <Grid
+    x:Name="ResponsiveRoot"
+    Margin="16"
+    ColumnDefinitions="2*,5*"
+    ColumnSpacing="16"
+    RowDefinitions="Auto,Auto"
+    RowSpacing="16"
+  >
+    <!-- Left: profile list and actions. In narrow Settings windows code-behind moves this above the editor. -->
+    <Border
+      x:Name="ProfileListPanel"
+      Grid.Row="0"
+      Grid.Column="0"
+      Padding="14"
+      Background="{DynamicResource ForkPanelBrush}"
+      BorderBrush="{DynamicResource ForkBorderBrush}"
+      BorderThickness="1"
+      CornerRadius="6"
+    >
+      <StackPanel Spacing="10">
+        <TextBlock FontSize="18" FontWeight="SemiBold" Text="{Binding LocalizationManager.ProfilesTabName}" />
+        <ListBox
+          x:Name="ProfileList"
+          MinHeight="180"
+          MaxHeight="430"
+          HorizontalAlignment="Stretch"
+          ItemsSource="{Binding Profiles}"
+          SelectedItem="{Binding SelectedProfile}"
+        >
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock
+                Padding="10,7"
+                Text="{Binding Name}"
+                TextTrimming="CharacterEllipsis"
+                ToolTip.Tip="{Binding Tooltip}"
+              />
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="8" RowSpacing="8">
+          <Button Grid.Row="0" Grid.Column="0" Command="{Binding AddProfileCommand}" Content="{Binding LocalizationManager.ProfileAddButton}" Theme="{DynamicResource MaterialFlatButton}" />
+          <Button Grid.Row="0" Grid.Column="1" Command="{Binding DuplicateProfileCommand}" Content="{Binding LocalizationManager.ProfileDuplicateButton}" Theme="{DynamicResource MaterialFlatButton}" />
+          <Button Grid.Row="1" Grid.Column="0" Command="{Binding RemoveProfileCommand}" Content="{Binding LocalizationManager.ProfileRemoveButton}" Theme="{DynamicResource MaterialFlatButton}" />
+          <Button Grid.Row="1" Grid.Column="1" Command="{Binding ActivateSelectedProfileCommand}" Content="{Binding LocalizationManager.ProfileActivateButton}" Theme="{DynamicResource MaterialFlatButton}" />
+          <Button Grid.Row="2" Grid.Column="0" Command="{Binding MoveProfileUpCommand}" Content="{Binding LocalizationManager.ProfileMoveUpButton}" Theme="{DynamicResource MaterialFlatButton}" />
+          <Button Grid.Row="2" Grid.Column="1" Command="{Binding MoveProfileDownCommand}" Content="{Binding LocalizationManager.ProfileMoveDownButton}" Theme="{DynamicResource MaterialFlatButton}" />
+        </Grid>
+      </StackPanel>
+    </Border>
+
+    <!-- Right: selected profile editor. -->
+    <Border
+      x:Name="ProfileEditorPanel"
+      Grid.Row="0"
+      Grid.Column="1"
+      Padding="18"
+      Background="{DynamicResource ForkSurfaceBrush}"
+      BorderBrush="{DynamicResource ForkBorderBrush}"
+      BorderThickness="1"
+      CornerRadius="6"
+      IsVisible="{Binding HasSelectedProfile}"
+    >
+      <StackPanel Spacing="16">
+        <TextBlock FontSize="18" FontWeight="SemiBold" Text="{Binding LocalizationManager.ProfileEditorHeader}" />
+
+        <Grid ColumnDefinitions="140,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnSpacing="14" RowSpacing="14">
+          <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Text="{Binding LocalizationManager.ProfileNameLabel}" TextWrapping="Wrap" />
+          <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ProfileName, UpdateSourceTrigger=LostFocus}" Theme="{DynamicResource CompactTextBox}" />
+
+          <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Text="{Binding LocalizationManager.ProfileTooltipLabel}" TextWrapping="Wrap" />
+          <TextBox
+            Grid.Row="1"
+            Grid.Column="1"
+            MaxLength="240"
+            Text="{Binding ProfileTooltip, UpdateSourceTrigger=LostFocus}"
+            TextWrapping="Wrap"
+            Watermark="{Binding LocalizationManager.ProfileTooltipWatermark}"
+            Theme="{DynamicResource CompactTextBox}"
+          />
+
+          <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Text="{Binding LocalizationManager.ProfileTemperatureLabel}" TextWrapping="Wrap" />
+          <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="*,84" ColumnSpacing="10">
+            <Slider
+              Grid.Column="0"
+              IsSnapToTickEnabled="True"
+              LargeChange="500"
+              Maximum="{Binding RecommendedMaximumProfileTemperature}"
+              Minimum="{Binding RecommendedMinimumProfileTemperature}"
+              SmallChange="100"
+              TickFrequency="100"
+              Value="{Binding ProfileTemperature}"
+            />
+            <TextBox
+              Grid.Column="1"
+              Text="{Binding ProfileTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+              TextAlignment="Right"
+              Theme="{DynamicResource CompactTextBox}"
+            />
+          </Grid>
+
+          <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Text="{Binding LocalizationManager.ProfileBrightnessLabel}" TextWrapping="Wrap" />
+          <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="*,84" ColumnSpacing="10">
+            <Slider
+              Grid.Column="0"
+              IsSnapToTickEnabled="True"
+              LargeChange="0.1"
+              Maximum="1"
+              Minimum="0.1"
+              SmallChange="0.01"
+              TickFrequency="0.01"
+              Value="{Binding ProfileBrightness}"
+            />
+            <TextBox
+              Grid.Column="1"
+              Text="{Binding ProfileBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+              TextAlignment="Right"
+              Theme="{DynamicResource CompactTextBox}"
+            />
+          </Grid>
+
+          <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Text="{Binding LocalizationManager.ProfileShortcutLabel}" TextWrapping="Wrap" />
+          <controls:HotKeyTextBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" HotKey="{Binding ProfileHotKey}" />
+        </Grid>
+
+        <TextBlock
+          FontSize="11"
+          FontWeight="SemiBold"
+          IsVisible="{Binding HasRegistrationError}"
+          Text="{Binding RegistrationErrorText}"
+          TextWrapping="Wrap"
+        />
+
+        <TextBlock
+          FontSize="11"
+          FontWeight="SemiBold"
+          Foreground="#FFD48A"
+          IsVisible="{Binding HasConflictWarning}"
+          Text="{Binding ConflictWarningText}"
+          TextWrapping="Wrap"
+        />
+
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+          <Button Grid.Column="0" Command="{Binding ActivateAutomaticProfileCommand}" Content="{Binding LocalizationManager.ProfileAutomaticButton}" Theme="{DynamicResource MaterialFlatButton}" />
+          <Button Grid.Column="1" Command="{Binding UpdateSelectedProfileFromCurrentCommand}" Content="{Binding LocalizationManager.ProfileUpdateFromCurrentButton}" Theme="{DynamicResource MaterialFlatButton}" />
+        </Grid>
+      </StackPanel>
+    </Border>
+
+    <Border
+      x:Name="EmptyProfilePanel"
+      Grid.Row="0"
+      Grid.Column="1"
+      Padding="28"
+      Background="{DynamicResource ForkSurfaceBrush}"
+      BorderBrush="{DynamicResource ForkBorderBrush}"
+      BorderThickness="1"
+      CornerRadius="6"
+      IsVisible="{Binding !HasSelectedProfile}"
+    >
+      <TextBlock
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Opacity="0.82"
+        Text="{Binding LocalizationManager.ProfileNoProfilesText}"
+        TextAlignment="Center"
+        TextWrapping="Wrap"
+      />
+    </Border>
+
+    <TextBlock
+      x:Name="ProfileHint"
+      Grid.Row="1"
+      Grid.ColumnSpan="2"
+      FontSize="11"
+      Foreground="{DynamicResource ForkMutedTextBrush}"
+      Text="{Binding LocalizationManager.ProfileHintText}"
+      TextWrapping="Wrap"
+    />
+  </Grid>
+</UserControl>

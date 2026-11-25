@@ -1,0 +1,202 @@
+<UserControl
+  x:Class="LightBulb.Views.Components.Settings.ToneProfileSettingsTabView"
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:converters="clr-namespace:LightBulb.Converters"
+  xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
+  x:DataType="settings:ToneProfileSettingsTabViewModel"
+>
+  <Grid
+    x:Name="ResponsiveRoot"
+    Margin="16"
+    ColumnDefinitions="2*,5*"
+    ColumnSpacing="16"
+    RowDefinitions="Auto,Auto"
+    RowSpacing="16"
+  >
+    <Border
+      x:Name="ProfileListPanel"
+      Grid.Row="0"
+      Grid.Column="0"
+      Padding="14"
+      Background="{DynamicResource ForkPanelBrush}"
+      BorderBrush="{DynamicResource ForkBorderBrush}"
+      BorderThickness="1"
+      CornerRadius="6"
+    >
+      <StackPanel Spacing="10">
+        <TextBlock FontSize="18" FontWeight="SemiBold" Text="{Binding LocalizationManager.ToneProfilesTabName}" />
+        <ListBox
+          x:Name="ProfileList"
+          MinHeight="180"
+          MaxHeight="430"
+          HorizontalAlignment="Stretch"
+          ItemsSource="{Binding Profiles}"
+          SelectedItem="{Binding SelectedProfile}"
+        >
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock
+                Padding="10,7"
+                Text="{Binding Name}"
+                TextTrimming="CharacterEllipsis"
+                ToolTip.Tip="{Binding Tooltip}"
+              />
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="8" RowSpacing="8">
+          <Button Grid.Row="0" Grid.Column="0" Command="{Binding AddProfileCommand}" Content="{Binding LocalizationManager.ToneProfileAddButton}" Theme="{DynamicResource MaterialFlatButton}" />
+          <Button Grid.Row="0" Grid.Column="1" Command="{Binding DuplicateProfileCommand}" Content="{Binding LocalizationManager.ToneProfileDuplicateButton}" Theme="{DynamicResource MaterialFlatButton}" />
+          <Button Grid.Row="1" Grid.Column="0" Command="{Binding RemoveProfileCommand}" Content="{Binding LocalizationManager.ToneProfileRemoveButton}" Theme="{DynamicResource MaterialFlatButton}" />
+          <Button Grid.Row="1" Grid.Column="1" Command="{Binding ActivateSelectedProfileCommand}" Content="{Binding LocalizationManager.ToneProfileActivateButton}" Theme="{DynamicResource MaterialFlatButton}" />
+          <Button Grid.Row="2" Grid.Column="0" Command="{Binding MoveProfileUpCommand}" Content="{Binding LocalizationManager.ToneProfileMoveUpButton}" Theme="{DynamicResource MaterialFlatButton}" />
+          <Button Grid.Row="2" Grid.Column="1" Command="{Binding MoveProfileDownCommand}" Content="{Binding LocalizationManager.ToneProfileMoveDownButton}" Theme="{DynamicResource MaterialFlatButton}" />
+        </Grid>
+      </StackPanel>
+    </Border>
+
+    <Border
+      x:Name="ProfileEditorPanel"
+      Grid.Row="0"
+      Grid.Column="1"
+      Padding="18"
+      Background="{DynamicResource ForkSurfaceBrush}"
+      BorderBrush="{DynamicResource ForkBorderBrush}"
+      BorderThickness="1"
+      CornerRadius="6"
+      IsVisible="{Binding HasSelectedProfile}"
+    >
+      <StackPanel Spacing="16">
+        <TextBlock FontSize="18" FontWeight="SemiBold" Text="{Binding LocalizationManager.ToneProfileEditorHeader}" />
+
+        <Grid ColumnDefinitions="145,*" ColumnSpacing="14">
+          <TextBlock Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Text="{Binding LocalizationManager.ToneProfileNameLabel}" />
+          <TextBox Grid.Column="1" Text="{Binding ProfileName, UpdateSourceTrigger=LostFocus}" Theme="{DynamicResource CompactTextBox}" />
+        </Grid>
+
+        <Grid ColumnDefinitions="145,*" ColumnSpacing="14">
+          <TextBlock Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Text="{Binding LocalizationManager.ProfileTooltipLabel}" />
+          <TextBox
+            Grid.Column="1"
+            MaxLength="240"
+            Text="{Binding ProfileTooltip, UpdateSourceTrigger=LostFocus}"
+            TextWrapping="Wrap"
+            Watermark="{Binding LocalizationManager.ToneProfileTooltipWatermark}"
+            Theme="{DynamicResource CompactTextBox}"
+          />
+        </Grid>
+
+        <Grid ColumnDefinitions="145,*" ColumnSpacing="14">
+          <TextBlock Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Text="{Binding LocalizationManager.ToneDefaultTargetLabel}" ToolTip.Tip="{Binding LocalizationManager.ToneDefaultTargetTooltip}" />
+          <ComboBox Grid.Column="1" ItemsSource="{Binding ToneTargetOptions}" SelectedItem="{Binding DefaultToneTarget}">
+            <ComboBox.ItemTemplate>
+              <DataTemplate x:DataType="settings:ToneTargetOption">
+                <TextBlock Text="{Binding Name}" />
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
+        </Grid>
+
+        <Border Height="1" Background="{DynamicResource ForkBorderBrush}" />
+
+        <StackPanel Spacing="10">
+          <TextBlock FontWeight="SemiBold" Text="{Binding LocalizationManager.ToneDarkTonesLabel}" ToolTip.Tip="{Binding LocalizationManager.ToneDarkTonesHelpTooltip}" />
+          <Grid ColumnDefinitions="145,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="14" RowSpacing="10">
+            <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="{Binding LocalizationManager.ToneTemperatureOffsetLabel}" />
+            <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="*,88" ColumnSpacing="10">
+              <Slider Grid.Column="0" IsSnapToTickEnabled="True" LargeChange="500" Maximum="{Binding MaximumTemperatureOffset}" Minimum="{Binding MinimumTemperatureOffset}" SmallChange="100" TickFrequency="100" Value="{Binding DarkTemperatureOffset}" />
+              <TextBox Grid.Column="1" Text="{Binding DarkTemperatureOffset, Converter={x:Static converters:DoubleToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}" TextAlignment="Right" Theme="{DynamicResource CompactTextBox}" />
+            </Grid>
+            <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Text="{Binding LocalizationManager.ToneBrightnessOffsetLabel}" />
+            <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="*,88" ColumnSpacing="10">
+              <Slider Grid.Column="0" IsSnapToTickEnabled="True" LargeChange="0.1" Maximum="{Binding MaximumBrightnessOffset}" Minimum="{Binding MinimumBrightnessOffset}" SmallChange="0.01" TickFrequency="0.01" Value="{Binding DarkBrightnessOffset}" />
+              <TextBox Grid.Column="1" Text="{Binding DarkBrightnessOffset, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, UpdateSourceTrigger=LostFocus}" TextAlignment="Right" Theme="{DynamicResource CompactTextBox}" />
+            </Grid>
+            <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="{Binding LocalizationManager.ToneIntensityLabel}" ToolTip.Tip="{Binding LocalizationManager.ToneIntensityTooltip}" />
+            <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="*,88" ColumnSpacing="10">
+              <Slider Grid.Column="0" IsSnapToTickEnabled="True" LargeChange="0.1" Maximum="{Binding MaximumIntensity}" Minimum="{Binding MinimumIntensity}" SmallChange="0.01" TickFrequency="0.01" Value="{Binding DarkIntensity}" />
+              <TextBox Grid.Column="1" Text="{Binding DarkIntensity, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, UpdateSourceTrigger=LostFocus}" TextAlignment="Right" Theme="{DynamicResource CompactTextBox}" />
+            </Grid>
+          </Grid>
+        </StackPanel>
+
+        <Border Height="1" Background="{DynamicResource ForkBorderBrush}" />
+
+        <StackPanel Spacing="10">
+          <TextBlock FontWeight="SemiBold" Text="{Binding LocalizationManager.ToneMidtonesLabel}" ToolTip.Tip="{Binding LocalizationManager.ToneMidtonesHelpTooltip}" />
+          <Grid ColumnDefinitions="145,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="14" RowSpacing="10">
+            <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="{Binding LocalizationManager.ToneTemperatureOffsetLabel}" />
+            <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="*,88" ColumnSpacing="10">
+              <Slider Grid.Column="0" IsSnapToTickEnabled="True" LargeChange="500" Maximum="{Binding MaximumTemperatureOffset}" Minimum="{Binding MinimumTemperatureOffset}" SmallChange="100" TickFrequency="100" Value="{Binding MidtoneTemperatureOffset}" />
+              <TextBox Grid.Column="1" Text="{Binding MidtoneTemperatureOffset, Converter={x:Static converters:DoubleToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}" TextAlignment="Right" Theme="{DynamicResource CompactTextBox}" />
+            </Grid>
+            <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Text="{Binding LocalizationManager.ToneBrightnessOffsetLabel}" />
+            <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="*,88" ColumnSpacing="10">
+              <Slider Grid.Column="0" IsSnapToTickEnabled="True" LargeChange="0.1" Maximum="{Binding MaximumBrightnessOffset}" Minimum="{Binding MinimumBrightnessOffset}" SmallChange="0.01" TickFrequency="0.01" Value="{Binding MidtoneBrightnessOffset}" />
+              <TextBox Grid.Column="1" Text="{Binding MidtoneBrightnessOffset, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, UpdateSourceTrigger=LostFocus}" TextAlignment="Right" Theme="{DynamicResource CompactTextBox}" />
+            </Grid>
+            <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="{Binding LocalizationManager.ToneIntensityLabel}" ToolTip.Tip="{Binding LocalizationManager.ToneIntensityTooltip}" />
+            <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="*,88" ColumnSpacing="10">
+              <Slider Grid.Column="0" IsSnapToTickEnabled="True" LargeChange="0.1" Maximum="{Binding MaximumIntensity}" Minimum="{Binding MinimumIntensity}" SmallChange="0.01" TickFrequency="0.01" Value="{Binding MidtoneIntensity}" />
+              <TextBox Grid.Column="1" Text="{Binding MidtoneIntensity, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, UpdateSourceTrigger=LostFocus}" TextAlignment="Right" Theme="{DynamicResource CompactTextBox}" />
+            </Grid>
+          </Grid>
+        </StackPanel>
+
+        <Border Height="1" Background="{DynamicResource ForkBorderBrush}" />
+
+        <StackPanel Spacing="10">
+          <TextBlock FontWeight="SemiBold" Text="{Binding LocalizationManager.ToneHighlightsLabel}" ToolTip.Tip="{Binding LocalizationManager.ToneHighlightsHelpTooltip}" />
+          <Grid ColumnDefinitions="145,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="14" RowSpacing="10">
+            <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="{Binding LocalizationManager.ToneTemperatureOffsetLabel}" />
+            <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="*,88" ColumnSpacing="10">
+              <Slider Grid.Column="0" IsSnapToTickEnabled="True" LargeChange="500" Maximum="{Binding MaximumTemperatureOffset}" Minimum="{Binding MinimumTemperatureOffset}" SmallChange="100" TickFrequency="100" Value="{Binding HighlightTemperatureOffset}" />
+              <TextBox Grid.Column="1" Text="{Binding HighlightTemperatureOffset, Converter={x:Static converters:DoubleToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}" TextAlignment="Right" Theme="{DynamicResource CompactTextBox}" />
+            </Grid>
+            <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Text="{Binding LocalizationManager.ToneBrightnessOffsetLabel}" />
+            <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="*,88" ColumnSpacing="10">
+              <Slider Grid.Column="0" IsSnapToTickEnabled="True" LargeChange="0.1" Maximum="{Binding MaximumBrightnessOffset}" Minimum="{Binding MinimumBrightnessOffset}" SmallChange="0.01" TickFrequency="0.01" Value="{Binding HighlightBrightnessOffset}" />
+              <TextBox Grid.Column="1" Text="{Binding HighlightBrightnessOffset, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, UpdateSourceTrigger=LostFocus}" TextAlignment="Right" Theme="{DynamicResource CompactTextBox}" />
+            </Grid>
+            <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="{Binding LocalizationManager.ToneIntensityLabel}" ToolTip.Tip="{Binding LocalizationManager.ToneIntensityTooltip}" />
+            <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="*,88" ColumnSpacing="10">
+              <Slider Grid.Column="0" IsSnapToTickEnabled="True" LargeChange="0.1" Maximum="{Binding MaximumIntensity}" Minimum="{Binding MinimumIntensity}" SmallChange="0.01" TickFrequency="0.01" Value="{Binding HighlightIntensity}" />
+              <TextBox Grid.Column="1" Text="{Binding HighlightIntensity, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, UpdateSourceTrigger=LostFocus}" TextAlignment="Right" Theme="{DynamicResource CompactTextBox}" />
+            </Grid>
+          </Grid>
+        </StackPanel>
+
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+          <Button Grid.Column="0" Command="{Binding ActivateOffCommand}" Content="{Binding LocalizationManager.ToneProfileOffButton}" Theme="{DynamicResource MaterialFlatButton}" />
+          <Button Grid.Column="1" Command="{Binding CaptureCurrentCommand}" Content="{Binding LocalizationManager.ToneProfileCaptureCurrentButton}" Theme="{DynamicResource MaterialFlatButton}" />
+        </Grid>
+      </StackPanel>
+    </Border>
+
+    <Border
+      x:Name="EmptyProfilePanel"
+      Grid.Row="0"
+      Grid.Column="1"
+      Padding="28"
+      Background="{DynamicResource ForkSurfaceBrush}"
+      BorderBrush="{DynamicResource ForkBorderBrush}"
+      BorderThickness="1"
+      CornerRadius="6"
+      IsVisible="{Binding !HasSelectedProfile}"
+    >
+      <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.82" Text="{Binding LocalizationManager.ToneProfileNoProfilesText}" TextAlignment="Center" TextWrapping="Wrap" />
+    </Border>
+
+    <TextBlock
+      x:Name="ProfileHint"
+      Grid.Row="1"
+      Grid.ColumnSpan="2"
+      FontSize="11"
+      Foreground="{DynamicResource ForkMutedTextBrush}"
+      Text="{Binding LocalizationManager.ToneProfileHintText}"
+      TextWrapping="Wrap"
+    />
+  </Grid>
+</UserControl>

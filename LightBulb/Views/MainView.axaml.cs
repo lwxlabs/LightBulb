@@ -17,7 +17,10 @@ public partial class MainView : Window<MainViewModel>
     private void HeaderBorder_OnPointerPressed(object? sender, PointerPressedEventArgs args) =>
         BeginMoveDrag(args);
 
-    private void HideButton_OnClick(object sender, RoutedEventArgs args) =>
-        // The window is closed, but the backend and the tray icon will persist
-        Close();
+    private void HideButton_OnClick(object sender, RoutedEventArgs args)
+    {
+        // Settings has its own non-modal window, so hiding the dashboard can never orphan it.
+        Hide();
+        DataContext.IsOpen = false;
+    }
 }
